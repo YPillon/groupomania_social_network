@@ -11,17 +11,16 @@ const sequelize = new Sequelize("groupomania", "groupomania_user", "12345678", {
   dialect: "mysql",
 });
 
-//app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-/*try {
+try {
   sequelize
     .authenticate()
     .then(() => console.log("Connecté à la base de données MySQL!"))
     .catch((err) => console.log(err));
 } catch (error) {
   console.error("Impossible de se connecter, erreur suivante :", error);
-}*/
+}
 
 app.use(cors());
 

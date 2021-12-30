@@ -24,4 +24,8 @@ User.init(
   }
 );
 
+User.sync()
+  .then(() => console.log("Table Users créée ou déjà existante !"))
+  .catch((err) => console.log(err));
+
 module.exports = User;
