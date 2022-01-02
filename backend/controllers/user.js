@@ -5,7 +5,7 @@ const User = require("../models/User");
 
 exports.signup = (req, res) => {
   bcrypt
-    .hash(req.body.password, 10)
+    .hash(JSON.stringify(req.body.password), 10)
     .then((hash) => {
       async function createUser() {
         try {
@@ -27,11 +27,12 @@ exports.login = (req, res, next) => {
   User.findOne({
     where: { email: JSON.stringify(req.body.email) },
   }).then((user) => {
+    console.log(user.password);
     if (!user) {
       return res.status(401).json({ error: "Utilisateur non trouvé" });
     }
     bcrypt
-      .compare(req.body.password, user.password)
+      .compare(JSON.stringify(req.body.password), user.password)
       .then((valid) => {
         if (!valid) {
           return res.status(403).json({ error: "Mot de passe incorrect !" });
@@ -43,6 +44,26 @@ exports.login = (req, res, next) => {
           }),
         });
       })
-      .catch((err) => res.status(500).json({ message: error }));
+      .catch((error) => res.status(570).json({ error: error }));
+  });
+};
+
+exports.deleteAccount = (req, res) => {
+  User.findOne({ where: { id: req.params.id } }).then((user) => {
+    if (!user) {
+      res.status(404).json({
+        error: new Error("No such Sauce!"),
+      });
+    }
+    if (user.id !== req.auth.userId) {
+      res.status(403).json({
+        error: new Error("Unauthorized request!"),
+      });
+    } else {
+      const userToDelete = user;
+      userToDelete.destroy()
+      .then(() => res.status(200).json({ message: "Utilisateur supprimé !" }))
+      .catch((error) => res.status(400).json({ error }));
+    }
   });
 };

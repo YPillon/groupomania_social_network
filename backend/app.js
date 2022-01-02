@@ -2,9 +2,11 @@ const bodyParser = require("body-parser");
 const { Sequelize, DataTypes, Model } = require("sequelize");
 const express = require("express");
 const cors = require("cors");
+const path = require("path");
 const app = express();
 
 const userRoutes = require("./routes/user");
+const postRoutes = require("./routes/post");
 
 const sequelize = new Sequelize("groupomania", "groupomania_user", "12345678", {
   host: "localhost",
@@ -37,10 +39,8 @@ app.use((req, res, next) => {
   next();
 });
 
-app.get("/", (req, res, next) => {
-  res.status(200).json({ message: "Effectif" });
-});
-
+app.use("/images", express.static(path.join(__dirname, 'images')));
 app.use("/", userRoutes);
+app.use("/", postRoutes);
 
 module.exports = app;

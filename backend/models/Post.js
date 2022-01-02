@@ -5,11 +5,11 @@ const sequelize = new Sequelize("groupomania", "groupomania_user", "12345678", {
   dialect: "mysql",
 });
 
-class Publication extends Model {}
-Publication.init(
+class Post extends Model {}
+Post.init(
   {
     userId: {
-      type: DataTypes.NUMBER,
+      type: DataTypes.INTEGER,
       allowNull: false,
     },
     title: {
@@ -20,10 +20,23 @@ Publication.init(
       type: DataTypes.STRING,
       allowNull: false,
     },
+    likes: {
+      type: DataTypes.INTEGER,
+      defaultValue: 0,
+    },
+    disLikes: {
+      type: DataTypes.INTEGER,
+      defaultValue: 0,
+    },
   },
   {
     sequelize,
+    timestamps: false,
   }
 );
 
-module.exports = Publication;
+Post.sync()
+  .then(() => console.log("Table Posts créée ou déjà existante !"))
+  .catch((err) => console.log(err));
+
+module.exports = Post;
