@@ -52,12 +52,12 @@ exports.deleteAccount = (req, res) => {
   User.findOne({ where: { id: req.params.id } }).then((user) => {
     if (!user) {
       res.status(404).json({
-        error: new Error("No such Sauce!"),
+        error: "No such User!",
       });
     }
     if (user.id !== req.auth.userId) {
       res.status(403).json({
-        error: new Error("Unauthorized request!"),
+        error: "Unauthorized request!",
       });
     } else {
       const userToDelete = user;
