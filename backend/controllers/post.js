@@ -3,6 +3,7 @@ const Comment = require("../models/Comment");
 const User = require("../models/User");
 
 exports.createPost = (req, res, next) => {
+  console.log(req.body);
   const post = Post.build({
     userId: req.body.userId,
     title: req.body.title,
@@ -136,7 +137,6 @@ exports.likeAndDislike2 = (req, res) => {
         console.log(thisUser);
       }
       didThisUserLiked(thisPost);
-      
     })
     .catch((error) => res.status(507).json(error));
 };
