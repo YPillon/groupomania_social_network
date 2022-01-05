@@ -3,14 +3,13 @@ const Comment = require("../models/Comment");
 const User = require("../models/User");
 
 exports.createPost = (req, res, next) => {
-  console.log(req.body);
+  console.log(req.file);
   const post = Post.build({
     userId: req.body.userId,
     title: req.body.title,
-    imageUrl: "uneUrl",
-    /*`${req.protocol}://${req.get("host")}/images/${
+    imageUrl: `${req.protocol}://${req.get("host")}/images/${
       req.file.filename
-    }`*/
+    }`,
   });
   post
     .save()

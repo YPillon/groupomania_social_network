@@ -6,9 +6,10 @@
         class="logo"
         src="./assets/icon-left-font-monochrome-black.png"
       />
-      <div id="nav">
-        <router-link to="/">Login</router-link> |
-        <router-link to="/about">About</router-link>
+      <div class="nav">
+        <router-link to="/">Connexion</router-link> |
+        <router-link to="/signup">Inscription</router-link> |
+        <router-link to="/home">Accueil</router-link>
       </div>
     </div>
     <router-view />
@@ -24,7 +25,7 @@
   color: #2c3e50;
 }
 
-#nav {
+.nav {
   padding: 30px;
 
   a {
@@ -40,5 +41,10 @@
 .logo {
   width: 300px;
   height: auto;
+}
+
+#header {
+  background-color: #caf5e1;
+  margin-bottom: 30px;
 }
 </style>

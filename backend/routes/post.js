@@ -8,7 +8,7 @@ const multer = require("../middleware/multer-config");
 router.post("/api/posts", multer, postCtrl.createPost);
 router.get("/api/posts", postCtrl.getAllPosts);
 router.get("/api/posts/:postId", postCtrl.getOnePost);
-router.put("/api/posts/:postId", auth, postCtrl.modifyPost);
+router.put("/api/posts/:postId", auth, multer, postCtrl.modifyPost);
 router.delete("/api/posts/:postId", auth, postCtrl.deletePost);
 
 router.post("/api/posts/:postId/comments", postCtrl.createComment);
