@@ -26,6 +26,16 @@ const routes = [
     name: "AddPost",
     component: () => import("../views/AddPost.vue"),
   },
+  {
+    path: "/post",
+    name: "Post",
+    component: () => import("../views/Post.vue"),
+  },
+  {
+    path: "/modifypost",
+    name: "ModifyPost",
+    component: () => import("../views/ModifyPost.vue"),
+  },
 ];
 
 const router = createRouter({

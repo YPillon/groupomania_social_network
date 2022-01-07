@@ -7,10 +7,6 @@
       class="loginForm"
     >
       <div class="formField">
-        <label for="userId">Choisissez un userId</label>
-        <input type="number" name="userId" id="userId" required />
-      </div>
-      <div class="formField">
         <label for="title">Choisissez un titre</label>
         <input type="text" name="title" id="postTitle" required />
       </div>
@@ -30,18 +26,24 @@ export default {
   name: "AddPost",
   methods: {
     sendPostData: function () {
+      console.log(localStorage.getItem("userId"));
       //Création du formData
       let formData = new FormData();
       formData.append("image", document.getElementById("postImage").files[0]);
-      formData.append("userId", document.getElementById("userId").value);
+      formData.append("userId", localStorage.getItem("userId"));
       formData.append("title", document.getElementById("postTitle").value);
+
       const requestOptions = {
         method: "POST",
         body: formData,
+        headers: {
+          Authorization: `Bearer ${JSON.parse(localStorage.getItem("token"))}`,
+        },
       };
       //Envoi de la requête à l'API
       return fetch("http://localhost:3000/api/posts", requestOptions)
         .then((res) => console.log(res))
+        .then(() => (location.href = "./#/home"))
         .catch((err) => console.log(err));
     },
   },

@@ -27,9 +27,8 @@ exports.login = (req, res, next) => {
   User.findOne({
     where: { email: JSON.stringify(req.body.email) },
   }).then((user) => {
-    console.log(user.password);
     if (!user) {
-      return res.status(401).json({ error: "Utilisateur non trouvé" });
+      res.status(404).json({ error: "Utilisateur non trouvé" });
     }
     bcrypt
       .compare(JSON.stringify(req.body.password), user.password)
@@ -48,6 +47,20 @@ exports.login = (req, res, next) => {
   });
 };
 
+exports.getUserEmail = (req, res) => {
+  User.findOne({ where: { id: req.params.userId }, attributes: ["email"] })
+    .then((user) => {
+      if (!user) {
+        res.status(404).json({
+          error: "No such User!",
+        });
+      } else {
+        res.status(200).json(user);
+      }
+    })
+    .catch((error) => res.status(501).json({ error: error }));
+};
+
 exports.deleteAccount = (req, res) => {
   User.findOne({ where: { id: req.params.id } }).then((user) => {
     if (!user) {
@@ -61,9 +74,10 @@ exports.deleteAccount = (req, res) => {
       });
     } else {
       const userToDelete = user;
-      userToDelete.destroy()
-      .then(() => res.status(200).json({ message: "Utilisateur supprimé !" }))
-      .catch((error) => res.status(400).json({ error }));
+      userToDelete
+        .destroy()
+        .then(() => res.status(200).json({ message: "Utilisateur supprimé !" }))
+        .catch((error) => res.status(400).json({ error }));
     }
   });
 };

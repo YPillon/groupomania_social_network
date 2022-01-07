@@ -72,7 +72,7 @@ exports.deletePost = (req, res) => {
           .catch((error) => res.status(400).json({ error }));
       }
     })
-    .catch((error) => res.status(500).json({ error: error }));
+    .catch((error) => res.status(501).json({ error: error }));
 };
 
 exports.createComment = (req, res) => {

@@ -1,7 +1,12 @@
 <template>
   <div class="content">
     <a id="addPostLink" href="./#/addpost">Créer un post</a>
-    <p>Voici les dernières publications de vos collègues !</p>
+    <p id="welcomeMessage">
+      Bienvenue ! Voici les dernières publications de vos collègues !
+    </p>
+    <p id="connectMessage">
+      Bienvenue ! Connectez-vous pour accéder aux dernières publications de vos collègues !
+    </p>
     <div id="posts"></div>
   </div>
 </template>
@@ -9,14 +14,11 @@
 <script>
 export default {
   name: "Home",
-  data() {
-    return {};
-  },
   methods: {
     createPosts: function (posts) {
-      for (let post of posts) {
-        const $postsBox = document.getElementById("posts");
+      const $postsBox = document.getElementById("posts");
 
+      for (let post of posts) {
         const $link = document.createElement("a");
         $link.setAttribute("href", `./#/post?id=${post.id}`);
 
@@ -34,14 +36,38 @@ export default {
         $post.appendChild($image);
       }
     },
+
+    checkIfLogIn: function () {
+      if (localStorage.getItem("token") === null) {
+        document.getElementById("addPostLink").classList.add("hide");
+        document.getElementById("welcomeMessage").classList.add("hide");
+      } else {
+        document.getElementById("connectMessage").classList.add("hide");
+      }
+    },
   },
   created() {
-    return fetch("http://localhost:3000/api/posts")
+    const requestHeaders = {
+      headers: {
+        Authorization: `Bearer ${JSON.parse(localStorage.getItem("token"))}`,
+      },
+    };
+
+    return fetch("http://localhost:3000/api/posts", requestHeaders)
       .then((res) => res.json())
       .then((postsData) => {
         this.createPosts(postsData);
       })
       .catch((err) => console.log(err));
   },
+  mounted() {
+    this.checkIfLogIn();
+  },
 };
 </script>
+
+<style lang="scss">
+.hide {
+  display: none;
+}
+</style>
