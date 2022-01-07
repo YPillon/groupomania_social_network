@@ -1,6 +1,8 @@
 const Post = require("../models/Post");
 const Comment = require("../models/Comment");
 const User = require("../models/User");
+const path = require("path");
+const fs = require("fs");
 
 exports.createPost = (req, res, next) => {
   console.log(req.file);
@@ -65,11 +67,16 @@ exports.deletePost = (req, res) => {
           error: "Unauthorized request!",
         });
       } else {
-        const postToDelete = post;
-        postToDelete
-          .destroy()
-          .then(() => res.status(200).json({ message: "Post supprimé !" }))
-          .catch((error) => res.status(400).json({ error }));
+        const filename = post.imageUrl.split("/images/")[1];
+        fs.unlink(path.join(__dirname, `../images/${filename}`), (err) => {
+          if (err) throw err;
+
+          const postToDelete = post;
+          postToDelete
+            .destroy()
+            .then(() => res.status(200).json({ message: "Post supprimé !" }))
+            .catch((error) => res.status(400).json({ error }));
+        });
       }
     })
     .catch((error) => res.status(501).json({ error: error }));
