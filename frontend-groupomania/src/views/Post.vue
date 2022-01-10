@@ -22,7 +22,6 @@ export default {
       return fetch(`http://localhost:3000/api/users/${userId}`)
         .then((res) => res.json())
         .then((email) => {
-          console.log(email);
           pseudoSpan.innerText = JSON.parse(email.email);
         })
         .catch((err) => console.log(err));
@@ -39,14 +38,21 @@ export default {
       const $image = document.createElement("img");
       $image.setAttribute("src", `${post.imageUrl}`);
 
+      const $addCommentLink = document.createElement("a");
+      $addCommentLink.setAttribute("href", `./#/addcomment?postid=${postId}`);
+      const $addCommentButton = document.createElement("button");
+      $addCommentButton.innerText = "Écrire un commentaire";
+
       $postBox.appendChild($post);
       $post.appendChild($title);
       $post.appendChild($image);
+      $post.appendChild($addCommentLink);
+      $addCommentLink.appendChild($addCommentButton);
 
       //Si l'utilisateur est le créateur
       if (localStorage.getItem("userId") == post.userId) {
         const $modifyLink = document.createElement("a");
-        $modifyLink.setAttribute("href", "/#/modifypost");
+        $modifyLink.setAttribute("href", `/#/modifypost?id=${postId}`);
         const $modifyButton = document.createElement("button");
         $modifyButton.innerText = "Modifier";
         const $deleteButton = document.createElement("button");
@@ -83,7 +89,7 @@ export default {
       }
     },
 
-    createComments: function (comments) {
+    createComments: function (comments, postId) {
       const $commentsBox = document.getElementById("comments");
 
       for (let comment of comments) {
@@ -99,6 +105,36 @@ export default {
 
         $commentsBox.appendChild($commentBox);
         $commentBox.appendChild($pseudo);
+
+        if (comment.userId === JSON.parse(localStorage.getItem("userId"))) {
+          const $deleteCommentButton = document.createElement("button");
+          $deleteCommentButton.innerText = "Supprimer";
+
+          //Ajout de l'écoute du click
+          $deleteCommentButton.addEventListener("click", function () {
+            const requestOptions = {
+              method: "DELETE",
+              headers: {
+                Authorization: `Bearer ${JSON.parse(
+                  localStorage.getItem("token")
+                )}`,
+              },
+            };
+
+            return fetch(
+              `http://localhost:3000/api/posts/${postId}/comments/${comment.id}`,
+              requestOptions
+            )
+              .then((res) => res.json())
+              .then(() => {
+                $deleteCommentButton.closest("div").classList.add("hide");
+              })
+              .catch((err) => console.log(err));
+          });
+
+          $commentBox.appendChild($deleteCommentButton);
+        }
+
         $commentBox.appendChild($commentText);
       }
     },
@@ -124,7 +160,7 @@ export default {
         )
           .then((res) => res.json())
           .then((commentsData) => {
-            this.createComments(commentsData);
+            this.createComments(commentsData, this.postId);
           })
           .catch((err) => console.log(err));
       })
@@ -132,3 +168,9 @@ export default {
   },
 };
 </script>
+
+<style lang="scss">
+.hide {
+  display: none;
+}
+</style>

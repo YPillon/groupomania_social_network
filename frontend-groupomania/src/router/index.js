@@ -36,6 +36,11 @@ const routes = [
     name: "ModifyPost",
     component: () => import("../views/ModifyPost.vue"),
   },
+  {
+    path: "/addcomment",
+    name: "AddComment",
+    component: () => import("../views/AddComment.vue"),
+  },
 ];
 
 const router = createRouter({

@@ -1,11 +1,11 @@
 <template>
   <div class="content">
     <div id="errorMessage"></div>
-    <div id="form">
+    <div class="formBox">
       <form
         method="post"
         action="http://localhost:3000/api/auth/login"
-        class="loginForm"
+        class="form"
       >
         <div class="formField">
           <label for="email">Email</label>

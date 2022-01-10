@@ -1,11 +1,9 @@
 <template>
-  <div id="form">
-    <form
-      method="post"
-      action="http://localhost:3000/api/posts"
-      enctype="multipart/form-data"
-      class="loginForm"
-    >
+  <div class="formBox">
+    <a :href="homeLink">
+      <button>Retour au fil d'actualité</button>
+    </a>
+    <form class="form">
       <div class="formField">
         <label for="title">Choisissez un titre</label>
         <input type="text" name="title" id="postTitle" required />
@@ -24,9 +22,13 @@
 <script>
 export default {
   name: "AddPost",
+  data() {
+    return {
+      homeLink: "./#/home",
+    };
+  },
   methods: {
     sendPostData: function () {
-      console.log(localStorage.getItem("userId"));
       //Création du formData
       let formData = new FormData();
       formData.append("image", document.getElementById("postImage").files[0]);
@@ -42,7 +44,7 @@ export default {
       };
       //Envoi de la requête à l'API
       return fetch("http://localhost:3000/api/posts", requestOptions)
-        .then((res) => console.log(res))
+        .then((res) => res.json())
         .then(() => (location.href = "./#/home"))
         .catch((err) => console.log(err));
     },

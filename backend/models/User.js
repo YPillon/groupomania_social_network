@@ -17,6 +17,10 @@ User.init(
       type: DataTypes.STRING,
       allowNull: false,
     },
+    role: {
+      type: DataTypes.STRING,
+      defaultValue: "employee",
+    },
   },
   {
     sequelize,
@@ -24,7 +28,7 @@ User.init(
   }
 );
 
-User.sync()
+User.sync({ alter: true })
   .then(() => console.log("Table Users créée ou déjà existante !"))
   .catch((err) => console.log(err));
 

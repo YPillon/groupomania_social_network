@@ -36,7 +36,7 @@ Post.init(
   }
 );
 
-class UserPosts extends Model {}
+/*class UserPosts extends Model {}
 UserPosts.init(
   {
     UserId: {
@@ -60,7 +60,7 @@ UserPosts.init(
     sequelize,
     timestamps: false,
   }
-);
+);*/
 
 /*const UserDislikedPosts = sequelize.define(
   "UserDislikedPosts",
@@ -85,8 +85,8 @@ UserPosts.init(
   }
 );*/
 
-User.belongsToMany(Post, { through: "UserPosts" });
-Post.belongsToMany(User, { through: "UserPosts" });
+/*User.belongsToMany(Post, { through: "UserPosts" });
+Post.belongsToMany(User, { through: "UserPosts" });*/
 
 /*User.belongsToMany(Post, {
   as: "UserDisliked",

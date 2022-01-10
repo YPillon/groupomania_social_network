@@ -1,10 +1,6 @@
 <template>
-  <div id="form">
-    <form
-      method="post"
-      action="http://localhost:3000/api/auth/signup"
-      class="loginForm"
-    >
+  <div class="formBox">
+    <form class="form">
       <div class="formField">
         <label for="email">Email</label>
         <input type="text" name="email" id="signUpEmail" required />
@@ -40,6 +36,9 @@ export default {
       };
       return fetch("http://localhost:3000/api/auth/signup", requestOptions)
         .then((res) => console.log(res))
+        .then(() => {
+          location.href = "./#/home";
+        })
         .catch((err) => console.log(err));
     },
   },

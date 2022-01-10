@@ -5,7 +5,6 @@ const path = require("path");
 const fs = require("fs");
 
 exports.createPost = (req, res, next) => {
-  console.log(req.file);
   const post = Post.build({
     userId: req.body.userId,
     title: req.body.title,
@@ -32,26 +31,42 @@ exports.getOnePost = (req, res) => {
 };
 
 exports.modifyPost = (req, res) => {
-  Post.findOne({ where: { id: req.params.postId } }).then((post) => {
-    if (!post) {
-      res.status(404).json({
-        error: "No such Post!",
-      });
-    }
-    if (post.userId !== req.auth.userId) {
-      res.status(403).json({
-        error: "Unauthorized request!",
-      });
-    } else {
-      const postToUpdate = post;
-      postToUpdate
-        .update({ title: req.body.title, imageUrl: req.body.imageUrl })
-        .then(() =>
-          res.status(200).json({ message: "Post modifié avec succès !" })
-        )
-        .catch((error) => res.status(501).json(error));
-    }
-  });
+  console.log(req.file);
+  Post.findOne({ where: { id: req.params.postId } })
+    .then((post) => {
+      if (!post) {
+        res.status(404).json({
+          error: "No such Post!",
+        });
+      }
+      if (post.userId !== req.auth.userId) {
+        res.status(403).json({
+          error: "Unauthorized request!",
+        });
+      }
+      if (req.file) {
+        console.log("FILE!");
+        console.log(req.get("host"));
+
+
+        const filename = post.imageUrl.split("/images/")[1];
+        fs.unlink(path.join(__dirname, `../images/${filename}`), (err) => {
+          if (err) throw err;
+
+          const postToUpdate = post;
+          postToUpdate
+            .update({
+              title: req.body.title,
+              imageUrl: `${req.protocol}://${req.get("host")}/images/${
+                req.file.filename
+              }`,
+            })
+            .then(() => res.status(200).json("Post modifié avec succès !"))
+            .catch((error) => res.status(501).json(error));
+        });
+      }
+    })
+    .catch((error) => res.status(502).json({ error }));
 };
 
 exports.deletePost = (req, res) => {
