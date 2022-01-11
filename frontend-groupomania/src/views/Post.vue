@@ -64,7 +64,7 @@ export default {
       console.log(localStorage.getItem("userId"));
       console.log(JSON.parse(localStorage.getItem("userRole")));
       console.log(this.postUserId);
-      // !!!!! This.postUserId n'est pas défini ici, mais il est défini lorsqu'on l'utilise danns le HTML ==> problème dans le timing !!!!!!!
+      // !!!!! This.postUserId n'est pas défini ici, mais il est défini lorsqu'on l'appelle danns le HTML ==> problème dans le timing !!!!!!!
       if (
         localStorage.getItem("userId") == this.postUserId ||
         JSON.parse(localStorage.getItem("userRole")) === "admin"
@@ -120,7 +120,7 @@ export default {
       )
         .then((res) => res.json())
         .then(() => {
-          //location.reload();
+          location.reload();
           //!!!!!!! Problème de rendu visuel du post après reload !!!!!!
         })
         .catch((err) => console.log(err));
