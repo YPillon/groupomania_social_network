@@ -38,9 +38,14 @@ exports.login = (req, res, next) => {
         }
         res.status(200).json({
           userId: user.id,
-          token: jwt.sign({ userId: user.id }, "RANDOM_TOKEN_SECRET", {
-            expiresIn: "24h",
-          }),
+          userRole: user.role,
+          token: jwt.sign(
+            { userId: user.id, userRole: user.role },
+            "RANDOM_TOKEN_SECRET",
+            {
+              expiresIn: "24h",
+            }
+          ),
         });
       })
       .catch((error) => res.status(570).json({ error: error }));
@@ -62,7 +67,7 @@ exports.getUserEmail = (req, res) => {
 };
 
 exports.deleteAccount = (req, res) => {
-  User.findOne({ where: { id: req.params.id } }).then((user) => {
+  User.findOne({ where: { id: req.params.userId } }).then((user) => {
     if (!user) {
       res.status(404).json({
         error: "No such User!",

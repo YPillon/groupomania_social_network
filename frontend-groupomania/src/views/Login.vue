@@ -9,11 +9,11 @@
       >
         <div class="formField">
           <label for="email">Email</label>
-          <input type="text" name="email" id="logEmail" required />
+          <input type="text" name="email" ref="logEmail" required />
         </div>
         <div class="formField">
           <label for="password">Mot de passe</label>
-          <input type="password" name="password" id="logPassword" required />
+          <input type="password" name="password" ref="logPassword" required />
         </div>
         <div class="formField">
           <button v-on:click="sendLogData">Connexion</button>
@@ -37,8 +37,8 @@ export default {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          email: document.getElementById("logEmail").value,
-          password: document.getElementById("logPassword").value,
+          email: this.$refs.logEmail.value,
+          password: this.$refs.logPassword.value,
         }),
       };
 
@@ -49,10 +49,11 @@ export default {
             document.getElementById("errorMessage").innerText =
               "L'email et le mot de passe ne correspondent pas";
           } else {
-            console.log(res.error);
             localStorage.setItem("userId", JSON.stringify(res.userId));
+            localStorage.setItem("userRole", JSON.stringify(res.userRole));
             localStorage.setItem("token", JSON.stringify(res.token));
             location.href = "./#/home";
+            location.reload();
           }
         })
         .catch((err) => console.log(err));
@@ -61,4 +62,49 @@ export default {
 };
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+.content {
+  background-color: #caf5e1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 10px;
+}
+
+.form {
+  &Box {
+    padding: 10px;
+  }
+  &Field {
+    margin-bottom: 10px;
+  }
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+a {
+  margin: 0;
+  text-decoration: none;
+  width: fit-content;
+  height: fit-content;
+  color: #2c3e50;
+  &:hover {
+    filter: brightness(150%);
+  }
+}
+
+p {
+  margin: 0;
+}
+
+button {
+  font-weight: bold;
+  &:hover {
+    filter: brightness(150%);
+  }
+}
+</style>

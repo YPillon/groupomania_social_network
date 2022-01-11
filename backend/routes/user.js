@@ -7,6 +7,6 @@ const userCtrl = require("../controllers/user");
 router.post("/api/auth/signup", userCtrl.signup);
 router.post("/api/auth/login", userCtrl.login);
 router.get("/api/users/:userId", userCtrl.getUserEmail);
-router.delete("/api/auth/:id", auth, userCtrl.deleteAccount);
+router.delete("/api/auth/:userId", auth, userCtrl.deleteAccount);
 
 module.exports = router;

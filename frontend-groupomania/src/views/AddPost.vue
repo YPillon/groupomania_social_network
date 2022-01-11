@@ -1,21 +1,23 @@
 <template>
-  <div class="formBox">
-    <a :href="homeLink">
-      <button>Retour au fil d'actualité</button>
-    </a>
-    <form class="form">
-      <div class="formField">
-        <label for="title">Choisissez un titre</label>
-        <input type="text" name="title" id="postTitle" required />
-      </div>
-      <div class="formField">
-        <label for="image">Téléchargez une image</label>
-        <input type="file" name="image" id="postImage" required />
-      </div>
-      <div class="formField">
-        <button @click.prevent="sendPostData">Créer le post</button>
-      </div>
-    </form>
+  <div class="content">
+    <div class="formBox">
+      <a :href="homeLink">
+        <button>Retour au fil d'actualité</button>
+      </a>
+      <form class="form">
+        <div class="formField">
+          <label for="title">Choisissez un titre</label>
+          <input type="text" name="title" ref="postTitle" required />
+        </div>
+        <div class="formField">
+          <label for="image">Téléchargez une image</label>
+          <input type="file" name="image" ref="postImage" required />
+        </div>
+        <div class="formField">
+          <button @click.prevent="sendPostData">Créer le post</button>
+        </div>
+      </form>
+    </div>
   </div>
 </template>
 
@@ -31,9 +33,9 @@ export default {
     sendPostData: function () {
       //Création du formData
       let formData = new FormData();
-      formData.append("image", document.getElementById("postImage").files[0]);
+      formData.append("image", this.$refs.postImage.files[0]);
       formData.append("userId", localStorage.getItem("userId"));
-      formData.append("title", document.getElementById("postTitle").value);
+      formData.append("title", this.$refs.postTitle.value);
 
       const requestOptions = {
         method: "POST",

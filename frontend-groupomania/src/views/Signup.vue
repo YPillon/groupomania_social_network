@@ -1,18 +1,25 @@
 <template>
-  <div class="formBox">
-    <form class="form">
-      <div class="formField">
-        <label for="email">Email</label>
-        <input type="text" name="email" id="signUpEmail" required />
-      </div>
-      <div class="formField">
-        <label for="password">Mot de passe</label>
-        <input type="password" name="password" id="signUpPassword" required />
-      </div>
-      <div class="formField">
-        <button v-on:click.prevent="sendSignUpData">Connexion</button>
-      </div>
-    </form>
+  <div class="content">
+    <div class="formBox">
+      <form class="form">
+        <div class="formField">
+          <label for="email">Email</label>
+          <input type="text" name="email" ref="signUpEmail" required />
+        </div>
+        <div class="formField">
+          <label for="password">Mot de passe</label>
+          <input
+            type="password"
+            name="password"
+            ref="signUpPassword"
+            required
+          />
+        </div>
+        <div class="formField">
+          <button v-on:click.prevent="sendSignUpData">Connexion</button>
+        </div>
+      </form>
+    </div>
   </div>
 </template>
 
@@ -30,12 +37,12 @@ export default {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          email: document.getElementById("signUpEmail").value,
-          password: document.getElementById("signUpPassword").value,
+          email: this.$refs.signUpEmail.value,
+          password: this.$refs.signUpPassword.value,
         }),
       };
       return fetch("http://localhost:3000/api/auth/signup", requestOptions)
-        .then((res) => console.log(res))
+        .then((res) => res.json())
         .then(() => {
           location.href = "./#/home";
         })

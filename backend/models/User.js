@@ -1,4 +1,5 @@
 const { Sequelize, DataTypes, Model } = require("sequelize");
+const bcrypt = require("bcrypt");
 
 const sequelize = new Sequelize("groupomania", "groupomania_user", "12345678", {
   host: "localhost",
@@ -28,8 +29,24 @@ User.init(
   }
 );
 
-User.sync({ alter: true })
+User.sync()
   .then(() => console.log("Table Users créée ou déjà existante !"))
+  //Création de l'admin ou vérification de son existance
+  .then(() => {
+    bcrypt.hash(JSON.stringify("1234"), 10).then((hash) => {
+      User.findOrCreate({
+        where: {
+          role: "admin",
+        },
+        defaults: {
+          email: JSON.stringify("admin@admin.com"),
+          password: hash,
+        },
+      })
+        .then(() => console.log("Admin existant!"))
+        .catch((error) => console.log(error));
+    });
+  })
   .catch((err) => console.log(err));
 
 module.exports = User;

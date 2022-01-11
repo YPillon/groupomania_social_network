@@ -48,7 +48,6 @@ exports.modifyPost = (req, res) => {
         console.log("FILE!");
         console.log(req.get("host"));
 
-
         const filename = post.imageUrl.split("/images/")[1];
         fs.unlink(path.join(__dirname, `../images/${filename}`), (err) => {
           if (err) throw err;
@@ -77,7 +76,7 @@ exports.deletePost = (req, res) => {
           error: "No such Post!",
         });
       }
-      if (post.userId !== req.auth.userId) {
+      if (post.userId !== req.auth.userId && req.auth.userRole !== "admin") {
         res.status(403).json({
           error: "Unauthorized request!",
         });
@@ -122,7 +121,7 @@ exports.deleteComment = (req, res) => {
           error: "No such Comment!",
         });
       }
-      if (comment.userId !== req.auth.userId) {
+      if (comment.userId !== req.auth.userId && req.auth.userRole !== "admin") {
         res.status(403).json({
           error: "Unauthorized request!",
         });

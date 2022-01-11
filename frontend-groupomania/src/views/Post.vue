@@ -1,10 +1,48 @@
 <template>
   <div class="content">
+    <p>postUserId: {{ postUserId }}</p>
+    <p>isPostCreator: {{ isPostCreator }}</p>
     <a :href="homeLink">
       <button>Retour</button>
     </a>
-    <div id="post"></div>
-    <div id="comments"></div>
+    <div id="post" class="post">
+      <article>
+        <h3>{{ post.title }}</h3>
+        <img :src="this.post.imageUrl" class="post__image" />
+        <a :href="`./#/addcomment?postid=${postId}`">
+          <button>Écrire un commentaire</button>
+        </a>
+        <template v-if="isPostCreator === true">
+          <div>
+            <a :href="`/#/modifypost?id=${postId}`">
+              <button class="modifyColor">Modifier</button>
+            </a>
+            <button @click="deletePost" class="deleteColor">Supprimer</button>
+          </div>
+        </template>
+      </article>
+    </div>
+    <h3>Commentaires</h3>
+    <div class="comments">
+      <p v-if="comments.length == 0">
+        Soyez le premier à écrire un commentaire !
+      </p>
+      <article v-for="comment in comments" :key="comment.id" class="commentBox">
+        <div class="pseudoBox">
+          <span>{{ this.getUserName(comment.userId) }}</span>
+          <!--!!!!!!  Le resultat affiche "[object Promise]" !!!!!!-->
+          <button
+            v-if="isPostCreator === true"
+            @click="deleteComment(comment.id)"
+            class="deleteColor deleteCommentButton"
+            ref="deleteCommentButton"
+          >
+            Supprimer
+          </button>
+        </div>
+        <p>{{ comment.text }}</p>
+      </article>
+    </div>
   </div>
 </template>
 
@@ -15,130 +53,80 @@ export default {
     return {
       homeLink: "./#/home",
       postId: this.$route.query.id,
+      isPostCreator: this.checkIfPostCreator(),
+      post: {},
+      postUserId: 0,
+      comments: [],
     };
   },
   methods: {
-    getUserName: function (userId, pseudoSpan) {
+    checkIfPostCreator: function () {
+      console.log(localStorage.getItem("userId"));
+      console.log(JSON.parse(localStorage.getItem("userRole")));
+      console.log(this.postUserId);
+      // !!!!! This.postUserId n'est pas défini ici, mais il est défini lorsqu'on l'utilise danns le HTML ==> problème dans le timing !!!!!!!
+      if (
+        localStorage.getItem("userId") == this.postUserId ||
+        JSON.parse(localStorage.getItem("userRole")) === "admin"
+      ) {
+        return true;
+      } else {
+        return false;
+      }
+    },
+
+    getUserName: function (userId) {
       return fetch(`http://localhost:3000/api/users/${userId}`)
         .then((res) => res.json())
         .then((email) => {
-          pseudoSpan.innerText = JSON.parse(email.email);
+          const userEmail = JSON.parse(email.email);
+          console.log(userEmail);
+          return userEmail;
         })
         .catch((err) => console.log(err));
     },
 
-    createPost: function (post, postId) {
-      const $postBox = document.getElementById("post");
+    deletePost: function () {
+      const requestOptions = {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${JSON.parse(localStorage.getItem("token"))}`,
+        },
+      };
+      console.log(this.postId);
 
-      const $post = document.createElement("article");
-
-      const $title = document.createElement("h3");
-      $title.innerText = post.title;
-
-      const $image = document.createElement("img");
-      $image.setAttribute("src", `${post.imageUrl}`);
-
-      const $addCommentLink = document.createElement("a");
-      $addCommentLink.setAttribute("href", `./#/addcomment?postid=${postId}`);
-      const $addCommentButton = document.createElement("button");
-      $addCommentButton.innerText = "Écrire un commentaire";
-
-      $postBox.appendChild($post);
-      $post.appendChild($title);
-      $post.appendChild($image);
-      $post.appendChild($addCommentLink);
-      $addCommentLink.appendChild($addCommentButton);
-
-      //Si l'utilisateur est le créateur
-      if (localStorage.getItem("userId") == post.userId) {
-        const $modifyLink = document.createElement("a");
-        $modifyLink.setAttribute("href", `/#/modifypost?id=${postId}`);
-        const $modifyButton = document.createElement("button");
-        $modifyButton.innerText = "Modifier";
-        const $deleteButton = document.createElement("button");
-        $deleteButton.setAttribute("id", "deleteButton");
-        $deleteButton.innerText = "Supprimer";
-
-        //fonction de suppression du post
-        $deleteButton.addEventListener("click", function () {
-          const requestOptions = {
-            method: "DELETE",
-            headers: {
-              Authorization: `Bearer ${JSON.parse(
-                localStorage.getItem("token")
-              )}`,
-            },
-          };
-          console.log(postId);
-
-          return fetch(
-            `http://localhost:3000/api/posts/${postId}`,
-            requestOptions
-          )
-            .then((res) => res.json())
-            .then(() => {
-              location.href = "./#/home";
-            })
-            .catch((err) => console.log(err));
-        });
-
-        //Insertion dans le DOM
-        $postBox.appendChild($modifyLink);
-        $modifyLink.appendChild($modifyButton);
-        $postBox.appendChild($deleteButton);
-      }
+      return fetch(
+        `http://localhost:3000/api/posts/${this.postId}`,
+        requestOptions
+      )
+        .then((res) => res.json())
+        .then(() => {
+          location.href = "./#/home";
+        })
+        .catch((err) => console.log(err));
     },
 
-    createComments: function (comments, postId) {
-      const $commentsBox = document.getElementById("comments");
+    deleteComment: function (commentId) {
+      const requestOptions = {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${JSON.parse(localStorage.getItem("token"))}`,
+        },
+      };
 
-      for (let comment of comments) {
-        const $commentBox = document.createElement("div");
-        $commentBox.classList.add("commentBox");
-
-        const $pseudo = document.createElement("span");
-
-        this.getUserName(comment.userId, $pseudo);
-
-        const $commentText = document.createElement("p");
-        $commentText.innerText = comment.text;
-
-        $commentsBox.appendChild($commentBox);
-        $commentBox.appendChild($pseudo);
-
-        if (comment.userId === JSON.parse(localStorage.getItem("userId"))) {
-          const $deleteCommentButton = document.createElement("button");
-          $deleteCommentButton.innerText = "Supprimer";
-
-          //Ajout de l'écoute du click
-          $deleteCommentButton.addEventListener("click", function () {
-            const requestOptions = {
-              method: "DELETE",
-              headers: {
-                Authorization: `Bearer ${JSON.parse(
-                  localStorage.getItem("token")
-                )}`,
-              },
-            };
-
-            return fetch(
-              `http://localhost:3000/api/posts/${postId}/comments/${comment.id}`,
-              requestOptions
-            )
-              .then((res) => res.json())
-              .then(() => {
-                $deleteCommentButton.closest("div").classList.add("hide");
-              })
-              .catch((err) => console.log(err));
-          });
-
-          $commentBox.appendChild($deleteCommentButton);
-        }
-
-        $commentBox.appendChild($commentText);
-      }
+      return fetch(
+        `http://localhost:3000/api/posts/${this.postId}/comments/${commentId}`,
+        requestOptions
+      )
+        .then((res) => res.json())
+        .then(() => {
+          //location.reload();
+          //!!!!!!! Problème de rendu visuel du post après reload !!!!!!
+        })
+        .catch((err) => console.log(err));
     },
   },
+
   created() {
     const requestHeaders = {
       headers: {
@@ -152,7 +140,8 @@ export default {
     )
       .then((res) => res.json())
       .then((postData) => {
-        this.createPost(postData, this.postId);
+        this.post = postData;
+        this.postUserId = postData.userId;
 
         return fetch(
           `http://localhost:3000/api/posts/${this.postId}/comments`,
@@ -160,7 +149,7 @@ export default {
         )
           .then((res) => res.json())
           .then((commentsData) => {
-            this.createComments(commentsData, this.postId);
+            this.comments = commentsData;
           })
           .catch((err) => console.log(err));
       })
@@ -170,7 +159,48 @@ export default {
 </script>
 
 <style lang="scss">
+.comments {
+  background-color: #90dfbb;
+  padding: 8px;
+  width: 50%;
+  border-radius: 10px;
+}
+
+.commentBox {
+  background-color: #caf5e1;
+  padding: 5px 5px;
+  &:not(:last-child) {
+    margin-bottom: 10px;
+  }
+  & > p {
+    text-align: left;
+  }
+}
+
+.pseudoBox {
+  display: flex;
+  justify-content: flex-start;
+  position: relative;
+  margin-bottom: 25px;
+  background-color: #90dfbb;
+  box-shadow: 2px 2px gray;
+  padding: 2px 4px;
+}
+
+.deleteCommentButton {
+  position: absolute;
+  right: 0px;
+}
+
 .hide {
   display: none;
+}
+
+.deleteColor {
+  background-color: rgb(202, 174, 174);
+}
+
+.modifyColor {
+  background-color: rgb(127, 128, 202);
 }
 </style>
