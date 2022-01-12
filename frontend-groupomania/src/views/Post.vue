@@ -1,7 +1,6 @@
 <template>
   <div class="content">
-    <p>postUserId: {{ postUserId }}</p>
-    <p>isPostCreator: {{ isPostCreator }}</p>
+    <p>isPostCreator: {{ this.checkIfPostCreator() }}</p>
     <a :href="homeLink">
       <button>Retour</button>
     </a>
@@ -12,7 +11,7 @@
         <a :href="`./#/addcomment?postid=${postId}`">
           <button>Écrire un commentaire</button>
         </a>
-        <template v-if="isPostCreator === true">
+        <template v-if="this.checkIfPostCreator() === true">
           <div>
             <a :href="`/#/modifypost?id=${postId}`">
               <button class="modifyColor">Modifier</button>
@@ -33,7 +32,7 @@
         <div class="pseudoBox">
           <span>{{ comment.userEmail }}</span>
           <button
-            v-if="isPostCreator === true"
+            v-if="this.checkIfCommentCreator(comment) === true"
             @click="deleteComment(comment.id)"
             class="deleteColor deleteCommentButton"
             ref="deleteCommentButton"
@@ -54,20 +53,16 @@ export default {
     return {
       homeLink: "./#/home",
       postId: this.$route.query.id,
-      isPostCreator: this.checkIfPostCreator(),
+      isPostCreator: "blue",
       post: {},
-      postUserId: 0,
+      postUserId: null,
       comments: [],
     };
   },
   methods: {
+
     checkIfPostCreator: function () {
-      console.log("UserId stored : " + localStorage.getItem("userId"));
-      console.log(
-        "UserRole stored : " + JSON.parse(localStorage.getItem("userRole"))
-      );
-      console.log("Post Creator Id :" + this.postUserId);
-      // !!!!! This.postUserId n'est pas défini ici, mais il est défini lorsqu'on l'appelle danns le HTML ==> problème dans le timing !!!!!!!
+      
       if (
         localStorage.getItem("userId") == this.postUserId ||
         JSON.parse(localStorage.getItem("userRole")) === "admin"
@@ -78,6 +73,18 @@ export default {
       }
     },
 
+    checkIfCommentCreator: function (comment) {
+      if (
+        localStorage.getItem("userId") == comment.userId ||
+        JSON.parse(localStorage.getItem("userRole")) === "admin"
+      ) {
+        return true;
+      } else {
+        return false;
+      }
+    },
+
+    //Suppression de post
     deletePost: function () {
       const requestOptions = {
         method: "DELETE",
@@ -98,6 +105,7 @@ export default {
         .catch((err) => console.log(err));
     },
 
+    //Suppression de commentaires
     deleteComment: function (commentId) {
       const requestOptions = {
         method: "DELETE",
@@ -119,7 +127,8 @@ export default {
     },
   },
 
-  created() {
+  //Récupération des données nécessaires pour l'affichage du post et des comments
+  created: function () {
     const requestHeaders = {
       headers: {
         Authorization: `Bearer ${JSON.parse(localStorage.getItem("token"))}`,
