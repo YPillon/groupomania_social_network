@@ -1,24 +1,28 @@
 <template>
-  <div class="formBox">
-    <a :href="postLink">
-      <button>Retour</button>
-    </a>
-    <p>Choisissez les informations que vous souhaitez modifier.</p>
+  <div class="content">
+    <div class="formBox">
+      <a :href="postLink">
+        <button>Retour</button>
+      </a>
+      <p class="infoTextModify">
+        Choisissez les informations que vous souhaitez modifier.
+      </p>
 
-    <form class="form">
-      <p ref="errorModifyMessage" class="error"></p>
-      <div class="formField">
-        <label for="title">Choisissez un nouveau titre</label>
-        <input type="text" name="title" ref="postTitleModify" required />
-      </div>
-      <div class="formField">
-        <label for="image">Téléchargez une nouvelle image</label>
-        <input type="file" name="image" ref="postImageModify" required />
-      </div>
-      <div class="formField">
-        <button @click.prevent="sendModifyData">Modifier le post</button>
-      </div>
-    </form>
+      <form class="form formToTheLeft">
+        <p ref="errorModifyMessage" class="error"></p>
+        <div class="formField">
+          <label for="title">Choisissez un nouveau titre </label>
+          <input type="text" name="title" ref="postTitleModify" required />
+        </div>
+        <div class="formField">
+          <label for="image">Téléchargez une nouvelle image </label>
+          <input type="file" name="image" ref="postImageModify" required />
+        </div>
+        <div class="formField">
+          <button @click.prevent="sendModifyData">Modifier le post</button>
+        </div>
+      </form>
+    </div>
   </div>
 </template>
 
@@ -70,3 +74,9 @@ export default {
   },
 };
 </script>
+
+<style lang="scss">
+.infoTextModify {
+  margin: 25px 0;
+}
+</style>

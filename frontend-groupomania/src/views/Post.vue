@@ -22,15 +22,16 @@
         </template>
       </article>
     </div>
+
     <h3>Commentaires</h3>
+
     <div class="comments">
       <p v-if="comments.length == 0">
         Soyez le premier à écrire un commentaire !
       </p>
       <article v-for="comment in comments" :key="comment.id" class="commentBox">
         <div class="pseudoBox">
-          <span>{{ this.getUserName(comment.userId) }}</span>
-          <!--!!!!!!  Le resultat affiche "[object Promise]" !!!!!!-->
+          <span>{{ comment.userEmail }}</span>
           <button
             v-if="isPostCreator === true"
             @click="deleteComment(comment.id)"
@@ -61,9 +62,11 @@ export default {
   },
   methods: {
     checkIfPostCreator: function () {
-      console.log(localStorage.getItem("userId"));
-      console.log(JSON.parse(localStorage.getItem("userRole")));
-      console.log(this.postUserId);
+      console.log("UserId stored : " + localStorage.getItem("userId"));
+      console.log(
+        "UserRole stored : " + JSON.parse(localStorage.getItem("userRole"))
+      );
+      console.log("Post Creator Id :" + this.postUserId);
       // !!!!! This.postUserId n'est pas défini ici, mais il est défini lorsqu'on l'appelle danns le HTML ==> problème dans le timing !!!!!!!
       if (
         localStorage.getItem("userId") == this.postUserId ||
@@ -73,17 +76,6 @@ export default {
       } else {
         return false;
       }
-    },
-
-    getUserName: function (userId) {
-      return fetch(`http://localhost:3000/api/users/${userId}`)
-        .then((res) => res.json())
-        .then((email) => {
-          const userEmail = JSON.parse(email.email);
-          console.log(userEmail);
-          return userEmail;
-        })
-        .catch((err) => console.log(err));
     },
 
     deletePost: function () {
@@ -159,11 +151,22 @@ export default {
 </script>
 
 <style lang="scss">
-.comments {
-  background-color: #90dfbb;
-  padding: 8px;
-  width: 50%;
-  border-radius: 10px;
+@media only all and (min-width: 768px) {
+  .comments {
+    background-color: #90dfbb;
+    padding: 8px;
+    width: 50%;
+    border-radius: 10px;
+  }
+}
+
+@media only all and (max-width: 767px) {
+  .comments {
+    background-color: #90dfbb;
+    padding: 8px;
+    width: 90%;
+    border-radius: 10px;
+  }
 }
 
 .commentBox {
@@ -197,7 +200,7 @@ export default {
 }
 
 .deleteColor {
-  background-color: rgb(202, 174, 174);
+  background-color: rgb(185, 176, 169);
 }
 
 .modifyColor {

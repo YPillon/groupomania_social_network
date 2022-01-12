@@ -1,16 +1,16 @@
 <template>
   <div class="content">
+    <a :href="homeLink">
+      <button>Retour au fil d'actualité</button>
+    </a>
     <div class="formBox">
-      <a :href="homeLink">
-        <button>Retour au fil d'actualité</button>
-      </a>
-      <form class="form">
+      <form class="form formToTheLeft">
         <div class="formField">
-          <label for="title">Choisissez un titre</label>
+          <label for="title">Choisissez un titre </label>
           <input type="text" name="title" ref="postTitle" required />
         </div>
         <div class="formField">
-          <label for="image">Téléchargez une image</label>
+          <label for="image">Téléchargez une image </label>
           <input type="file" name="image" ref="postImage" required />
         </div>
         <div class="formField">
@@ -53,3 +53,9 @@ export default {
   },
 };
 </script>
+
+<style lang="scss">
+.formToTheLeft {
+  align-items: flex-start;
+}
+</style>

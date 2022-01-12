@@ -52,20 +52,6 @@ exports.login = (req, res, next) => {
   });
 };
 
-exports.getUserEmail = (req, res) => {
-  User.findOne({ where: { id: req.params.userId }, attributes: ["email"] })
-    .then((user) => {
-      if (!user) {
-        res.status(404).json({
-          error: "No such User!",
-        });
-      } else {
-        res.status(200).json(user);
-      }
-    })
-    .catch((error) => res.status(501).json({ error: error }));
-};
-
 exports.deleteAccount = (req, res) => {
   User.findOne({ where: { id: req.params.userId } }).then((user) => {
     if (!user) {

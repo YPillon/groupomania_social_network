@@ -3,11 +3,11 @@
     <div class="formBox">
       <form class="form">
         <div class="formField">
-          <label for="email">Email</label>
+          <label for="email">Email </label>
           <input type="text" name="email" ref="signUpEmail" required />
         </div>
         <div class="formField">
-          <label for="password">Mot de passe</label>
+          <label for="password">Mot de passe </label>
           <input
             type="password"
             name="password"

@@ -13,6 +13,10 @@ Comment.init(
       type: DataTypes.INTEGER,
       allowNull: false,
     },
+    userEmail: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
     text: {
       type: DataTypes.STRING,
       allowNull: false,

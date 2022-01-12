@@ -3,18 +3,18 @@
     <div id="header">
       <p>Connected: {{ userLoggedIn }}</p>
 
+      <img
+        alt="Logo Groupomania"
+        class="logo"
+        src="./assets/icon-left-font-monochrome-black.png"
+      />
+
       <template v-if="userLoggedIn == true">
         <div class="logOutButtons">
           <button @click="logOut">Déconnexion</button>
           <button @click="deleteAccount">Supprimer le compte</button>
         </div>
       </template>
-
-      <img
-        alt="Logo Groupomania"
-        class="logo"
-        src="./assets/icon-left-font-monochrome-black.png"
-      />
 
       <div class="nav">
         <router-link to="/">Connexion</router-link> |
@@ -26,6 +26,7 @@
   </div>
 </template>
 
+//importation de VueHead
 <script>
 export default {
   name: "App",
@@ -76,6 +77,10 @@ export default {
       }
     },
   },
+  created: function () {
+    const html = document.documentElement; // returns the html tag
+    html.setAttribute("lang", "fr");
+  },
 };
 </script>
 
@@ -95,13 +100,14 @@ export default {
     font-weight: bold;
 
     &.router-link-exact-active {
-      color: #42b983;
+      color: #417649;
+      text-decoration: underline;
     }
   }
 }
 
 .logo {
-  width: 300px;
+  width: 280px;
   height: auto;
 }
 
@@ -112,11 +118,14 @@ export default {
   position: relative;
 }
 
-.logOutButtons {
-  position: absolute;
-  right: 10px;
-  top: 10px;
-  display: flex;
-  flex-direction: column;
+@media only all and (min-width: 768px) {
+  .logOutButtons {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    display: flex;
+    flex-direction: column;
+    width: 100px;
+  }
 }
 </style>

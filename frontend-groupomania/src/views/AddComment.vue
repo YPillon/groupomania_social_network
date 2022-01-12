@@ -1,25 +1,28 @@
 <template>
-  <div class="formBox">
+  <div class="content">
     <a :href="postLink">
       <button>Retour à la publication</button>
     </a>
-    <form class="form">
-      <div class="formField">
-        <textarea
-          rows="10"
-          cols="50"
-          placeholder="Partagez votre opinion ici..."
-          name="comment"
-          ref="commentText"
-          required
-        />
-      </div>
-      <div class="formField">
-        <button @click.prevent="sendCommentData(this.postId)">
-          Publier le commentaire
-        </button>
-      </div>
-    </form>
+    <div class="formBoxComment">
+      <form class="form">
+        <div class="formField">
+          <textarea
+            rows="8"
+            cols="50"
+            placeholder="Partagez votre opinion ici..."
+            name="comment"
+            ref="commentText"
+            class="commentText"
+            required
+          />
+        </div>
+        <div class="formField">
+          <button @click.prevent="sendCommentData(this.postId)">
+            Publier le commentaire
+          </button>
+        </div>
+      </form>
+    </div>
   </div>
 </template>
 
@@ -57,3 +60,25 @@ export default {
   },
 };
 </script>
+
+<style lang="scss">
+@media only all and (min-width: 768px) {
+  .formBoxComment {
+    width: auto;
+    padding: 10px;
+  }
+}
+
+@media only all and (max-width: 767px) {
+  .formBoxComment {
+    width: 100%;
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+  }
+
+  .commentText {
+    width: 90%;
+  }
+}
+</style>

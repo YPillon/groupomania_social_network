@@ -19,6 +19,8 @@
             :src="post.imageUrl"
             alt="L'image d'un post"
             class="post__image"
+            width="700"
+            height="500"
           />
           <a :href="`./#/post?id=${post.id}`">Voir le post</a>
         </article>
@@ -56,6 +58,7 @@ export default {
     return fetch("http://localhost:3000/api/posts", requestHeaders)
       .then((res) => res.json())
       .then((postsData) => {
+        postsData.reverse();
         this.posts = postsData;
       })
       .catch((err) => console.log(err));
@@ -76,23 +79,44 @@ export default {
   align-items: center;
 }
 
-.post {
-  background-color: #90dfbb;
-  padding: 10px;
-  width: 50%;
-  margin: 20px;
-  border-radius: 10px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  &__image {
-    width: 90%;
-    height: 90%;
-    border-radius: 5px;
-  }
-}
-
 h3 {
   margin: 0px 0px 10px;
+}
+
+@media only all and (min-width: 768px) {
+  .post {
+    background-color: #90dfbb;
+    padding: 10px;
+    width: 50%;
+    margin: 20px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    &__image {
+      width: 90%;
+      max-height: 500px;
+      object-fit: contain;
+      border-radius: 5px;
+    }
+  }
+}
+@media only all and (max-width: 767px) {
+  .post {
+    background-color: #90dfbb;
+    padding: 10px;
+    width: 90%;
+    margin: 20px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    &__image {
+      width: 90%;
+      max-height: 500px;
+      object-fit: contain;
+      border-radius: 5px;
+    }
+  }
 }
 </style>

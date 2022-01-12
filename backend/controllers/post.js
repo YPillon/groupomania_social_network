@@ -97,13 +97,18 @@ exports.deletePost = (req, res) => {
 };
 
 exports.createComment = (req, res) => {
-  Comment.create({
-    userId: req.body.userId,
-    text: req.body.text,
-    PostId: req.params.postId,
-  })
-    .then(() => res.status(201).json("Commentaire publié avec succès"))
-    .catch((error) => res.status(400).json({ error: error }));
+  User.findByPk(req.body.userId)
+    .then((user) => {
+      Comment.create({
+        userId: req.body.userId,
+        userEmail: user.email,
+        text: req.body.text,
+        PostId: req.params.postId,
+      })
+        .then(() => res.status(201).json("Commentaire publié avec succès"))
+        .catch((error) => res.status(400).json({ error: error }));
+    })
+    .catch((error) => res.status(404).json({ error: error }));
 };
 
 exports.getComments = (req, res) => {

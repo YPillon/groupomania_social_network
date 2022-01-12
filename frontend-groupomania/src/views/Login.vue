@@ -8,11 +8,11 @@
         class="form"
       >
         <div class="formField">
-          <label for="email">Email</label>
+          <label for="email">Email </label>
           <input type="text" name="email" ref="logEmail" required />
         </div>
         <div class="formField">
-          <label for="password">Mot de passe</label>
+          <label for="password">Mot de passe </label>
           <input type="password" name="password" ref="logPassword" required />
         </div>
         <div class="formField">
@@ -69,11 +69,14 @@ export default {
   flex-direction: column;
   align-items: center;
   border-radius: 10px;
+  padding: 20px 0;
+  width: 100%;
 }
 
 .form {
   &Box {
     padding: 10px;
+    width: auto;
   }
   &Field {
     margin-bottom: 10px;
