@@ -76,7 +76,5 @@ export default {
 </script>
 
 <style lang="scss">
-.infoTextModify {
-  margin: 25px 0;
-}
+
 </style>

@@ -85,6 +85,11 @@ export default {
 </script>
 
 <style lang="scss">
+
+//Les style sont classés dans leur ordre d'apparition dans le
+//parcours utilisateur classique
+
+//Style propre à App.vue
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -127,5 +132,196 @@ export default {
     flex-direction: column;
     width: 100px;
   }
+}
+
+//from Login.vue
+.content {
+  background-color: #caf5e1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 10px;
+  padding: 20px 0;
+  width: 100%;
+}
+
+.form {
+  &Box {
+    padding: 10px;
+    width: auto;
+  }
+  &Field {
+    margin-bottom: 10px;
+  }
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+a {
+  margin: 0;
+  text-decoration: none;
+  width: fit-content;
+  height: fit-content;
+  color: #2c3e50;
+  &:hover {
+    filter: brightness(150%);
+  }
+}
+
+p {
+  margin: 0;
+}
+
+button {
+  font-weight: bold;
+  &:hover {
+    filter: brightness(150%);
+  }
+}
+
+//from Home.vue
+.hide {
+  display: none;
+}
+
+#posts {
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+h3 {
+  margin: 0px 0px 10px;
+}
+
+@media only all and (min-width: 768px) {
+  .post {
+    background-color: #90dfbb;
+    padding: 10px;
+    width: 50%;
+    margin: 20px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    &__image {
+      width: 90%;
+      max-height: 500px;
+      object-fit: contain;
+      border-radius: 5px;
+    }
+  }
+}
+@media only all and (max-width: 767px) {
+  .post {
+    background-color: #90dfbb;
+    padding: 10px;
+    width: 90%;
+    margin: 20px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    &__image {
+      width: 90%;
+      max-height: 500px;
+      object-fit: contain;
+      border-radius: 5px;
+    }
+  }
+}
+
+//from AddPost.vue
+.formToTheLeft {
+  align-items: flex-start;
+}
+
+//from Post.vue
+@media only all and (min-width: 768px) {
+  .comments {
+    background-color: #90dfbb;
+    padding: 8px;
+    width: 50%;
+    border-radius: 10px;
+  }
+}
+
+@media only all and (max-width: 767px) {
+  .comments {
+    background-color: #90dfbb;
+    padding: 8px;
+    width: 90%;
+    border-radius: 10px;
+  }
+}
+
+.commentBox {
+  background-color: #caf5e1;
+  padding: 5px 5px;
+  &:not(:last-child) {
+    margin-bottom: 10px;
+  }
+  & > p {
+    text-align: left;
+  }
+}
+
+.pseudoBox {
+  display: flex;
+  justify-content: flex-start;
+  position: relative;
+  margin-bottom: 25px;
+  background-color: #90dfbb;
+  box-shadow: 2px 2px gray;
+  padding: 2px 4px;
+}
+
+.deleteCommentButton {
+  position: absolute;
+  right: 0px;
+}
+
+.hide {
+  display: none;
+}
+
+.deleteColor {
+  background-color: rgb(185, 176, 169);
+}
+
+.modifyColor {
+  background-color: rgb(127, 128, 202);
+}
+
+//from AddComment.vue
+@media only all and (min-width: 768px) {
+  .formBoxComment {
+    width: auto;
+    padding: 10px;
+  }
+}
+
+@media only all and (max-width: 767px) {
+  .formBoxComment {
+    width: 100%;
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+  }
+
+  .commentText {
+    width: 90%;
+  }
+}
+
+//from ModifyPost.vue
+.infoTextModify {
+  margin: 25px 0;
 }
 </style>

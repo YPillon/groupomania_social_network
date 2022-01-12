@@ -53,7 +53,7 @@ export default {
     return {
       homeLink: "./#/home",
       postId: this.$route.query.id,
-      isPostCreator: "blue",
+      isPostCreator: null,
       post: {},
       postUserId: null,
       comments: [],
@@ -160,59 +160,5 @@ export default {
 </script>
 
 <style lang="scss">
-@media only all and (min-width: 768px) {
-  .comments {
-    background-color: #90dfbb;
-    padding: 8px;
-    width: 50%;
-    border-radius: 10px;
-  }
-}
 
-@media only all and (max-width: 767px) {
-  .comments {
-    background-color: #90dfbb;
-    padding: 8px;
-    width: 90%;
-    border-radius: 10px;
-  }
-}
-
-.commentBox {
-  background-color: #caf5e1;
-  padding: 5px 5px;
-  &:not(:last-child) {
-    margin-bottom: 10px;
-  }
-  & > p {
-    text-align: left;
-  }
-}
-
-.pseudoBox {
-  display: flex;
-  justify-content: flex-start;
-  position: relative;
-  margin-bottom: 25px;
-  background-color: #90dfbb;
-  box-shadow: 2px 2px gray;
-  padding: 2px 4px;
-}
-
-.deleteCommentButton {
-  position: absolute;
-  right: 0px;
-}
-
-.hide {
-  display: none;
-}
-
-.deleteColor {
-  background-color: rgb(185, 176, 169);
-}
-
-.modifyColor {
-  background-color: rgb(127, 128, 202);
-}
 </style>

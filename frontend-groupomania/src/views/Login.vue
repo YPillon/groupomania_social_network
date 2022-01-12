@@ -63,51 +63,5 @@ export default {
 </script>
 
 <style lang="scss">
-.content {
-  background-color: #caf5e1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  border-radius: 10px;
-  padding: 20px 0;
-  width: 100%;
-}
 
-.form {
-  &Box {
-    padding: 10px;
-    width: auto;
-  }
-  &Field {
-    margin-bottom: 10px;
-  }
-}
-
-form {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-}
-
-a {
-  margin: 0;
-  text-decoration: none;
-  width: fit-content;
-  height: fit-content;
-  color: #2c3e50;
-  &:hover {
-    filter: brightness(150%);
-  }
-}
-
-p {
-  margin: 0;
-}
-
-button {
-  font-weight: bold;
-  &:hover {
-    filter: brightness(150%);
-  }
-}
 </style>

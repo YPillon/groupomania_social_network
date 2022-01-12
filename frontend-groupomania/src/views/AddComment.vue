@@ -62,23 +62,5 @@ export default {
 </script>
 
 <style lang="scss">
-@media only all and (min-width: 768px) {
-  .formBoxComment {
-    width: auto;
-    padding: 10px;
-  }
-}
 
-@media only all and (max-width: 767px) {
-  .formBoxComment {
-    width: 100%;
-    padding: 10px;
-    display: flex;
-    justify-content: center;
-  }
-
-  .commentText {
-    width: 90%;
-  }
-}
 </style>

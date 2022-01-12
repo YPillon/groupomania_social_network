@@ -55,7 +55,5 @@ export default {
 </script>
 
 <style lang="scss">
-.formToTheLeft {
-  align-items: flex-start;
-}
+
 </style>
