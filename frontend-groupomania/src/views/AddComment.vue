@@ -18,6 +18,7 @@
             required
           />
         </div>
+
         <div class="formField">
           <button @click.prevent="sendCommentData(this.postId)">
             Publier le commentaire
@@ -39,6 +40,12 @@ export default {
     };
   },
   methods: {
+    /**
+     * Envoie les données du commentaire à l'API avec l'Id du post
+     * et l'Id de l'utilisateur ayant écrit le commentaire.
+     * @param { Number } postId
+     * @return { Promise }
+     */
     sendCommentData: function (postId) {
       //Vérification des champs du formulaire
       if (this.$refs.commentText.value.trim() == "") {

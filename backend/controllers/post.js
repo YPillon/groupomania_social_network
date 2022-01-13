@@ -38,13 +38,14 @@ exports.modifyPost = (req, res) => {
         res.status(404).json({
           error: "No such Post!",
         });
-      }
-      if (post.userId !== req.auth.userId) {
+      } else if (
+        post.userId !== req.auth.userId &&
+        req.auth.userRole !== "admin"
+      ) {
         res.status(403).json({
           error: "Unauthorized request!",
         });
-      }
-      if (req.file) {
+      } else if (req.file) {
         console.log("FILE!");
         console.log(req.get("host"));
 

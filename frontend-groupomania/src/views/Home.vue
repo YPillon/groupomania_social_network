@@ -1,9 +1,7 @@
 <template>
   <div class="content">
     <template v-if="this.checkIfLoggedIn() == true">
-      <h2>
-        Bienvenue ! Voici les dernières publications de vos collègues !
-      </h2>
+      <h2>Bienvenue ! Voici les dernières publications de vos collègues !</h2>
       <a id="addPostLink" href="./#/addpost">
         <button>Créer un post</button>
       </a>
@@ -15,9 +13,10 @@
             :src="post.imageUrl"
             alt="L'image d'un post"
             class="post__image"
-            
           />
-          <a class="seePostButton" :href="`./#/post?id=${post.id}`">Voir le post</a>
+          <a class="seePostButton" :href="`./#/post?id=${post.id}`"
+            >Voir le post</a
+          >
         </article>
       </div>
     </template>
@@ -33,8 +32,11 @@ export default {
       userLoggedIn: this.checkIfLoggedIn(),
     };
   },
-  computed: {},
   methods: {
+    /**
+     * Vérifie qu'un utilisateur est bien connecté
+     * @return { Boolean }
+     */
     checkIfLoggedIn: () => {
       if (localStorage.getItem("token") === null) {
         return false;
@@ -43,6 +45,11 @@ export default {
       }
     },
   },
+
+  /**
+   * Récupère les posts présents dans la base de données via l'API
+   * @return { Promise[posts] }
+   */
   created() {
     const requestHeaders = {
       headers: {

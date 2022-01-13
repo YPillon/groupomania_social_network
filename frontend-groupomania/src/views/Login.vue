@@ -1,16 +1,19 @@
 <template>
   <div class="content">
     <p class="errorMessage">{{ errorLogin }}</p>
+
     <div class="formBox">
       <form class="form">
         <div class="formField">
           <label for="email">Email </label>
           <input type="text" name="email" ref="logEmail" required />
         </div>
+
         <div class="formField">
           <label for="password">Mot de passe </label>
           <input type="password" name="password" ref="logPassword" required />
         </div>
+
         <div class="formField">
           <button v-on:click.prevent="sendLogData">Connexion</button>
         </div>
@@ -28,6 +31,12 @@ export default {
     };
   },
   methods: {
+    /**
+     * Envoie les données de connexion pour vérification à l'API.
+     * Si la connexion est réussie, stocke les données de la réponse dans 
+     * le localStorage et redirige vers le fil d'actualité.
+     * @return { Promise<token, userId, userRole> }
+     */
     sendLogData: function () {
       const requestOptions = {
         method: "POST",

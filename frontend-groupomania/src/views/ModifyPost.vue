@@ -3,9 +3,11 @@
     <a :href="postLink">
       <button>Retour</button>
     </a>
+
     <p class="infoTextModify">
       Choisissez les informations que vous souhaitez modifier.
     </p>
+
     <p class="errorMessage">{{ modifyError }}</p>
 
     <div class="formBox">
@@ -14,10 +16,12 @@
           <label for="title">Choisissez un nouveau titre </label>
           <input type="text" name="title" ref="postTitleModify" required />
         </div>
+
         <div class="formField">
           <label for="image">Téléchargez une nouvelle image </label>
           <input type="file" name="image" ref="postImageModify" required />
         </div>
+
         <div class="formField">
           <button @click.prevent="sendModifyData">Modifier le post</button>
         </div>
@@ -36,6 +40,11 @@ export default {
     };
   },
   methods: {
+    /**
+     * Envoie les données de modification du post à l'API
+     * et redirige vers le fil d'actualités
+     * @return { Promise }
+     */
     sendModifyData: function () {
       //Vérification des champs du formulaire
       if (
@@ -50,6 +59,7 @@ export default {
         formData.append("image", this.$refs.postImageModify.files[0]);
         formData.append("title", this.$refs.postTitleModify.value);
 
+        //Envoi de la requête à l'API
         const requestOptions = {
           method: "Put",
           body: formData,
@@ -60,13 +70,12 @@ export default {
           },
         };
 
-        //Envoi de la requête à l'API
         return fetch(
           `http://localhost:3000/api/posts/${this.$route.query.id}`,
           requestOptions
         )
           .then((res) => res.json())
-          .then(() => (location.href = "./#/home"))
+          .then(() => location.href = "./#/home")
           .catch((err) => console.log(err));
       }
     },

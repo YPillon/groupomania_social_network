@@ -38,6 +38,10 @@ export default {
     };
   },
   methods: {
+    /**
+     * Vérifie que l'utilisateur est connecté
+     * @return { Boolean }
+     */
     checkIfLoggedIn: function () {
       if (localStorage.getItem("token") === null) {
         return false;
@@ -46,12 +50,20 @@ export default {
       }
     },
 
+    /**
+     * Déconnecte l'utilisateur et renvoie à la page de connexion
+     */
     logOut: () => {
       localStorage.clear();
       location.href = "./#/";
       location.reload();
     },
 
+    /**
+     * Supprime le compte de l'utilisateur connecté après confirmation
+     * et redirige vers la page de connexion
+     * @return { Promise }
+     */
     deleteAccount: function () {
       if (
         window.confirm(
@@ -78,6 +90,10 @@ export default {
       }
     },
   },
+
+  /**
+   * Ajoute l'attribut lang="fr" à la balise html
+   */
   created: function () {
     const html = document.documentElement; // returns the html tag
     html.setAttribute("lang", "fr");
@@ -87,7 +103,8 @@ export default {
 
 <style lang="scss">
 //Les style sont classés dans leur ordre d'apparition dans le
-//parcours utilisateur classique
+//parcours utilisateur classique:
+// login, home, addPost, post, addComment, modifyPost
 
 //Couleur de la charte graphique
 $color1: #0d203e;
@@ -135,7 +152,6 @@ html {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
 }
 
 .nav {
@@ -241,7 +257,6 @@ button {
 }
 
 //from Home.vue
-
 #posts {
   width: 100%;
   height: auto;

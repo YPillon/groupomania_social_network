@@ -4,16 +4,19 @@
       <button>Retour au fil d'actualité</button>
     </a>
     <p class="errorMessage">{{ addPostError }}</p>
+
     <div class="formBox">
       <form class="form formToTheLeft">
         <div class="formField">
           <label for="title">Choisissez un titre </label>
           <input type="text" name="title" ref="postTitle" required />
         </div>
+
         <div class="formField">
           <label for="image">Téléchargez une image </label>
           <input type="file" name="image" ref="postImage" required />
         </div>
+
         <div class="formField">
           <button @click.prevent="sendPostData">Créer le post</button>
         </div>
@@ -32,6 +35,10 @@ export default {
     };
   },
   methods: {
+    /**
+     * Envoie les données du post à l'API (titre, image, userId)
+     * @return { Promise }
+     */
     sendPostData: function () {
       //Vérification des champs du formulaire
       if (
@@ -46,6 +53,7 @@ export default {
         formData.append("userId", localStorage.getItem("userId"));
         formData.append("title", this.$refs.postTitle.value);
 
+        //Envoi de la requête à l'API
         const requestOptions = {
           method: "POST",
           body: formData,
@@ -55,7 +63,7 @@ export default {
             )}`,
           },
         };
-        //Envoi de la requête à l'API
+
         return fetch("http://localhost:3000/api/posts", requestOptions)
           .then((res) => res.json())
           .then(() => {

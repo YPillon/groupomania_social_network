@@ -8,6 +8,7 @@
           <label for="email">Email </label>
           <input type="text" name="email" ref="signUpEmail" required />
         </div>
+
         <div class="formField">
           <label for="password">Mot de passe </label>
           <input
@@ -17,6 +18,7 @@
             required
           />
         </div>
+
         <div class="formField">
           <button v-on:click.prevent="sendSignUpData">Inscription</button>
         </div>
@@ -34,6 +36,11 @@ export default {
     };
   },
   methods: {
+    /**
+     * Envoie les données pour la création d'un compte à l'API
+     * et redirige vers la page de connexion.
+     * @return { Promise }
+     */
     sendSignUpData: function () {
       //Vérification des champs du formulaire
       if (
@@ -43,6 +50,7 @@ export default {
         this.signupError =
           "Veuillez entrer votre email et choisir un mot de passe";
       } else {
+        //Envoi de la requête à l'API
         const requestOptions = {
           method: "POST",
           headers: { "Content-Type": "application/json" },
