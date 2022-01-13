@@ -1,11 +1,7 @@
 <template>
   <div class="content">
-    <h2 id="connectMessage" v-if="this.checkIfLoggedIn() == false">
-      Bienvenue ! Connectez-vous pour accéder aux dernières publications de vos
-      collègues !
-    </h2>
-    <template v-else-if="this.checkIfLoggedIn() == true">
-      <h2 id="welcomeMessage">
+    <template v-if="this.checkIfLoggedIn() == true">
+      <h2>
         Bienvenue ! Voici les dernières publications de vos collègues !
       </h2>
       <a id="addPostLink" href="./#/addpost">
@@ -19,10 +15,9 @@
             :src="post.imageUrl"
             alt="L'image d'un post"
             class="post__image"
-            width="700"
-            height="500"
+            
           />
-          <a :href="`./#/post?id=${post.id}`">Voir le post</a>
+          <a class="seePostButton" :href="`./#/post?id=${post.id}`">Voir le post</a>
         </article>
       </div>
     </template>
@@ -65,7 +60,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss">
-
-</style>

@@ -16,7 +16,7 @@
           />
         </div>
         <div class="formField">
-          <button v-on:click.prevent="sendSignUpData">Connexion</button>
+          <button v-on:click.prevent="sendSignUpData">Inscription</button>
         </div>
       </form>
     </div>

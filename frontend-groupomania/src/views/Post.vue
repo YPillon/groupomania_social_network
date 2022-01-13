@@ -1,6 +1,5 @@
 <template>
   <div class="content">
-    <p>isPostCreator: {{ this.checkIfPostCreator() }}</p>
     <a :href="homeLink">
       <button>Retour</button>
     </a>
@@ -9,14 +8,14 @@
         <h3>{{ post.title }}</h3>
         <img :src="this.post.imageUrl" class="post__image" />
         <a :href="`./#/addcomment?postid=${postId}`">
-          <button>Écrire un commentaire</button>
+          <button class="commentButton">Écrire un commentaire</button>
         </a>
         <template v-if="this.checkIfPostCreator() === true">
           <div>
             <a :href="`/#/modifypost?id=${postId}`">
-              <button class="modifyColor">Modifier</button>
+              <button class="modifyButton">Modifier</button>
             </a>
-            <button @click="deletePost" class="deleteColor">Supprimer</button>
+            <button @click="deletePost" class="deleteButton">Supprimer</button>
           </div>
         </template>
       </article>
@@ -34,7 +33,7 @@
           <button
             v-if="this.checkIfCommentCreator(comment) === true"
             @click="deleteComment(comment.id)"
-            class="deleteColor deleteCommentButton"
+            class="deleteButton deleteCommentButton"
             ref="deleteCommentButton"
           >
             Supprimer
@@ -158,7 +157,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss">
-
-</style>

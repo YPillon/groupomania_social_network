@@ -12,7 +12,7 @@
             placeholder="Partagez votre opinion ici..."
             name="comment"
             ref="commentText"
-            class="commentText"
+            class="formBoxComment__Text"
             required
           />
         </div>
@@ -60,7 +60,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss">
-
-</style>

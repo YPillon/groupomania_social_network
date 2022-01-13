@@ -1,12 +1,10 @@
 <template>
   <div id="app">
     <div id="header">
-      <p>Connected: {{ userLoggedIn }}</p>
-
       <img
         alt="Logo Groupomania"
         class="logo"
-        src="./assets/icon-left-font-monochrome-black.png"
+        src="./assets/icon-left-font-monochrome-white.svg"
       />
 
       <template v-if="userLoggedIn == true">
@@ -18,8 +16,11 @@
 
       <div class="nav">
         <router-link to="/">Connexion</router-link> |
-        <router-link to="/signup">Inscription</router-link> |
-        <router-link to="/home">Fil d'actualité</router-link>
+        <router-link to="/signup">Inscription</router-link>
+        <span v-if="userLoggedIn == true"> | </span>
+        <router-link v-if="userLoggedIn == true" to="/home"
+          >Fil d'actualité</router-link
+        >
       </div>
     </div>
     <router-view />
@@ -85,11 +86,50 @@ export default {
 </script>
 
 <style lang="scss">
-
 //Les style sont classés dans leur ordre d'apparition dans le
 //parcours utilisateur classique
 
+//Couleur de la charte graphique
+$color1: #0d203e;
+$font-color1: #ffffff;
+
+$color2: #d1d1d1;
+$font-color2: #091f43;
+
+$color3: #d1515a;
+
+//Taille de police
+$xSmall: 1.6rem;
+$small: 1.9rem;
+$medium: 2.2rem;
+$large: 2.5rem;
+
+$breakpoints: (
+  "desktopTablet": 768px,
+  "phone": 767px,
+);
+
+@mixin media-min($key) {
+  @media all and (min-width: map-get($breakpoints, $key)) {
+    @content;
+  }
+}
+
+@mixin media-max($key) {
+  @media all and (max-width: map-get($breakpoints, $key)) {
+    @content;
+  }
+}
+
 //Style propre à App.vue
+html {
+  font-size: 62.5%;
+}
+
+* {
+  font-size: $small;
+}
+
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -105,44 +145,53 @@ export default {
     font-weight: bold;
 
     &.router-link-exact-active {
-      color: #417649;
       text-decoration: underline;
     }
   }
 }
 
 .logo {
-  width: 280px;
+  width: 400px;
   height: auto;
+  @include media-max("phone") {
+    width: 280px;
+    margin-bottom: 20px;
+  }
 }
 
 #header {
-  background-color: #caf5e1;
+  padding-top: 30px;
+  background-color: $color1;
+  color: $font-color1;
   margin-bottom: 30px;
   border-radius: 10px;
   position: relative;
+  & a {
+    color: $font-color1;
+  }
 }
 
-@media only all and (min-width: 768px) {
-  .logOutButtons {
+.logOutButtons {
+  @include media-min("desktopTablet") {
     position: absolute;
     right: 10px;
     top: 10px;
     display: flex;
     flex-direction: column;
-    width: 100px;
+    width: 120px;
   }
 }
 
 //from Login.vue
 .content {
-  background-color: #caf5e1;
+  background-color: $color2;
   display: flex;
   flex-direction: column;
   align-items: center;
   border-radius: 10px;
   padding: 20px 0;
   width: 100%;
+  color: $font-color2;
 }
 
 .form {
@@ -166,9 +215,9 @@ a {
   text-decoration: none;
   width: fit-content;
   height: fit-content;
-  color: #2c3e50;
+  color: $font-color2;
   &:hover {
-    filter: brightness(150%);
+    text-shadow: 1px 2px 1px $color3;
   }
 }
 
@@ -178,15 +227,20 @@ p {
 
 button {
   font-weight: bold;
+  color: $color1;
+  border: solid 1px;
+  border-radius: 5px;
+  font-size: $xSmall;
   &:hover {
-    filter: brightness(150%);
+    box-shadow: 2px 2px 2px $color3;
   }
 }
 
-//from Home.vue
-.hide {
-  display: none;
+.errorMessage {
+  color: $color3;
 }
+
+//from Home.vue
 
 #posts {
   width: 100%;
@@ -196,45 +250,43 @@ button {
   align-items: center;
 }
 
-h3 {
-  margin: 0px 0px 10px;
+h2 {
+  font-size: $large;
 }
 
-@media only all and (min-width: 768px) {
-  .post {
-    background-color: #90dfbb;
-    padding: 10px;
-    width: 50%;
-    margin: 20px;
-    border-radius: 10px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    &__image {
-      width: 90%;
-      max-height: 500px;
-      object-fit: contain;
-      border-radius: 5px;
+h3 {
+  margin: 0px 0px 10px;
+  font-size: $medium;
+}
+
+.post {
+  background-color: $color2;
+  padding: 10px;
+  object-fit: contain;
+  width: 60%;
+  @include media-max("phone") {
+    width: 90%;
+  }
+  margin: 20px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 2px 2px 10px $color1;
+  &__image {
+    width: 90%;
+    max-height: 500px;
+    object-fit: contain;
+    border-radius: 5px;
+    @include media-max("phone") {
+      min-width: 250px;
     }
   }
 }
-@media only all and (max-width: 767px) {
-  .post {
-    background-color: #90dfbb;
-    padding: 10px;
-    width: 90%;
-    margin: 20px;
-    border-radius: 10px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    &__image {
-      width: 90%;
-      max-height: 500px;
-      object-fit: contain;
-      border-radius: 5px;
-    }
-  }
+
+.seePostButton {
+  margin-top: 10px;
+  font-size: $medium;
 }
 
 //from AddPost.vue
@@ -243,26 +295,19 @@ h3 {
 }
 
 //from Post.vue
-@media only all and (min-width: 768px) {
-  .comments {
-    background-color: #90dfbb;
-    padding: 8px;
-    width: 50%;
-    border-radius: 10px;
-  }
-}
-
-@media only all and (max-width: 767px) {
-  .comments {
-    background-color: #90dfbb;
-    padding: 8px;
+.comments {
+  background-color: $color1;
+  padding: 8px;
+  width: 60%;
+  border-radius: 10px;
+  box-shadow: 2px 2px 10px $color3;
+  @include media-max("phone") {
     width: 90%;
-    border-radius: 10px;
   }
 }
 
 .commentBox {
-  background-color: #caf5e1;
+  background-color: $color2;
   padding: 5px 5px;
   &:not(:last-child) {
     margin-bottom: 10px;
@@ -277,46 +322,47 @@ h3 {
   justify-content: flex-start;
   position: relative;
   margin-bottom: 25px;
-  background-color: #90dfbb;
+  background-color: $color1;
+  color: $font-color1;
   box-shadow: 2px 2px gray;
   padding: 2px 4px;
+}
+
+.commentButton {
+  margin: 5px 0;
+}
+
+.deleteButton {
+  background-color: $color2;
+  font-size: $xSmall;
+}
+
+.modifyButton {
+  background-color: $color1;
+  color: $font-color1;
+  border: solid 1px $color1;
+  font-size: $xSmall;
 }
 
 .deleteCommentButton {
   position: absolute;
   right: 0px;
-}
-
-.hide {
-  display: none;
-}
-
-.deleteColor {
-  background-color: rgb(185, 176, 169);
-}
-
-.modifyColor {
-  background-color: rgb(127, 128, 202);
+  font-size: $xSmall;
 }
 
 //from AddComment.vue
-@media only all and (min-width: 768px) {
-  .formBoxComment {
+.formBoxComment {
+  padding: 10px;
+  @include media-max("desktopTablet") {
     width: auto;
-    padding: 10px;
   }
-}
-
-@media only all and (max-width: 767px) {
-  .formBoxComment {
+  @include media-max("phone") {
     width: 100%;
-    padding: 10px;
     display: flex;
     justify-content: center;
-  }
-
-  .commentText {
-    width: 90%;
+    &__Text {
+      width: 90%;
+    }
   }
 }
 
