@@ -3,6 +3,7 @@
     <a :href="homeLink">
       <button>Retour au fil d'actualité</button>
     </a>
+    <p class="errorMessage">{{ addPostError }}</p>
     <div class="formBox">
       <form class="form formToTheLeft">
         <div class="formField">
@@ -27,28 +28,41 @@ export default {
   data() {
     return {
       homeLink: "./#/home",
+      addPostError: "",
     };
   },
   methods: {
     sendPostData: function () {
-      //Création du formData
-      let formData = new FormData();
-      formData.append("image", this.$refs.postImage.files[0]);
-      formData.append("userId", localStorage.getItem("userId"));
-      formData.append("title", this.$refs.postTitle.value);
+      //Vérification des champs du formulaire
+      if (
+        this.$refs.postImage.files[0] === undefined ||
+        this.$refs.postTitle.value.trim() == ""
+      ) {
+        this.addPostError = "Veuillez choisir un titre et une image";
+      } else {
+        //Création du formData
+        let formData = new FormData();
+        formData.append("image", this.$refs.postImage.files[0]);
+        formData.append("userId", localStorage.getItem("userId"));
+        formData.append("title", this.$refs.postTitle.value);
 
-      const requestOptions = {
-        method: "POST",
-        body: formData,
-        headers: {
-          Authorization: `Bearer ${JSON.parse(localStorage.getItem("token"))}`,
-        },
-      };
-      //Envoi de la requête à l'API
-      return fetch("http://localhost:3000/api/posts", requestOptions)
-        .then((res) => res.json())
-        .then(() => (location.href = "./#/home"))
-        .catch((err) => console.log(err));
+        const requestOptions = {
+          method: "POST",
+          body: formData,
+          headers: {
+            Authorization: `Bearer ${JSON.parse(
+              localStorage.getItem("token")
+            )}`,
+          },
+        };
+        //Envoi de la requête à l'API
+        return fetch("http://localhost:3000/api/posts", requestOptions)
+          .then((res) => res.json())
+          .then(() => {
+            location.href = "./#/home";
+          })
+          .catch((err) => console.log(err));
+      }
     },
   },
 };

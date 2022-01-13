@@ -13,7 +13,7 @@ exports.signup = (req, res) => {
             email: JSON.stringify(req.body.email),
             password: hash,
           });
-          res.status(201).send("Utilisateur créé avec succès !");
+          res.status(201).json("Utilisateur créé avec succès !");
         } catch (err) {
           res.status(400).send(err);
         }

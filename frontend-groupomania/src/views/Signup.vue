@@ -1,5 +1,7 @@
 <template>
   <div class="content">
+    <p class="errorMessage">{{ signupError }}</p>
+
     <div class="formBox">
       <form class="form">
         <div class="formField">
@@ -28,25 +30,35 @@ export default {
   name: "Signup",
   data() {
     return {
-      value: 1,
+      signupError: "",
     };
   },
   methods: {
     sendSignUpData: function () {
-      const requestOptions = {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          email: this.$refs.signUpEmail.value,
-          password: this.$refs.signUpPassword.value,
-        }),
-      };
-      return fetch("http://localhost:3000/api/auth/signup", requestOptions)
-        .then((res) => res.json())
-        .then(() => {
-          location.href = "./#/home";
-        })
-        .catch((err) => console.log(err));
+      //Vérification des champs du formulaire
+      if (
+        this.$refs.signUpEmail.value.trim() == "" ||
+        this.$refs.signUpPassword.value.trim() == ""
+      ) {
+        this.signupError =
+          "Veuillez entrer votre email et choisir un mot de passe";
+      } else {
+        const requestOptions = {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            email: this.$refs.signUpEmail.value,
+            password: this.$refs.signUpPassword.value,
+          }),
+        };
+
+        return fetch("http://localhost:3000/api/auth/signup", requestOptions)
+          .then((res) => res.json())
+          .then(() => {
+            location.href = "./#/";
+          })
+          .catch((err) => console.log(err));
+      }
     },
   },
 };

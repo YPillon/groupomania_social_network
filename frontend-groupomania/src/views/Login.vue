@@ -1,6 +1,6 @@
 <template>
   <div class="content">
-    <div class="errorMessage">{{ errorLogin }}</div>
+    <p class="errorMessage">{{ errorLogin }}</p>
     <div class="formBox">
       <form class="form">
         <div class="formField">

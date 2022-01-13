@@ -295,6 +295,10 @@ h3 {
 }
 
 //from Post.vue
+.emptyCommentsMessage {
+  color: $font-color1;
+}
+
 .comments {
   background-color: $color1;
   padding: 8px;

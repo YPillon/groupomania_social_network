@@ -3,6 +3,7 @@
     <a :href="homeLink">
       <button>Retour</button>
     </a>
+
     <div id="post" class="post">
       <article>
         <h3>{{ post.title }}</h3>
@@ -24,7 +25,7 @@
     <h3>Commentaires</h3>
 
     <div class="comments">
-      <p v-if="comments.length == 0">
+      <p v-if="comments.length == 0" class="emptyCommentsMessage">
         Soyez le premier à écrire un commentaire !
       </p>
       <article v-for="comment in comments" :key="comment.id" class="commentBox">
@@ -59,9 +60,7 @@ export default {
     };
   },
   methods: {
-
     checkIfPostCreator: function () {
-      
       if (
         localStorage.getItem("userId") == this.postUserId ||
         JSON.parse(localStorage.getItem("userRole")) === "admin"
@@ -91,7 +90,6 @@ export default {
           Authorization: `Bearer ${JSON.parse(localStorage.getItem("token"))}`,
         },
       };
-      console.log(this.postId);
 
       return fetch(
         `http://localhost:3000/api/posts/${this.postId}`,

@@ -1,15 +1,15 @@
 <template>
   <div class="content">
-    <div class="formBox">
-      <a :href="postLink">
-        <button>Retour</button>
-      </a>
-      <p class="infoTextModify">
-        Choisissez les informations que vous souhaitez modifier.
-      </p>
+    <a :href="postLink">
+      <button>Retour</button>
+    </a>
+    <p class="infoTextModify">
+      Choisissez les informations que vous souhaitez modifier.
+    </p>
+    <p class="errorMessage">{{ modifyError }}</p>
 
+    <div class="formBox">
       <form class="form formToTheLeft">
-        <p ref="errorModifyMessage" class="error"></p>
         <div class="formField">
           <label for="title">Choisissez un nouveau titre </label>
           <input type="text" name="title" ref="postTitleModify" required />
@@ -32,18 +32,17 @@ export default {
   data() {
     return {
       postLink: `./#/post?id=${this.$route.query.id}`,
+      modifyError: "",
     };
   },
   methods: {
     sendModifyData: function () {
-      if (this.$refs.postTitleModify.value == "") {
-        console.log("HAHA");
-      }
+      //Vérification des champs du formulaire
       if (
         this.$refs.postImageModify.files[0] === undefined ||
-        this.$refs.postTitleModify.value == ""
+        this.$refs.postTitleModify.value.trim() == ""
       ) {
-        this.$refs.errorModifyMessage.innerText =
+        this.modifyError =
           "Veuillez choisir un nouveau titre et télcharger une nouvelle image";
       } else {
         //Création du formData
