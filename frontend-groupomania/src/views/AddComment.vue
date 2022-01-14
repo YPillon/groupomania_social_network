@@ -1,5 +1,5 @@
 <template>
-  <div class="content">
+  <div class="content" role="main">
     <a :href="postLink">
       <button>Retour à la publication</button>
     </a>

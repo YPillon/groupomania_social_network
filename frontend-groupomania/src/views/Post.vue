@@ -1,5 +1,5 @@
 <template>
-  <div class="content">
+  <div class="content" role="main">
     <a :href="homeLink">
       <button>Retour</button>
     </a>
@@ -7,7 +7,7 @@
     <div id="post" class="post">
       <article>
         <h3>{{ post.title }}</h3>
-        <img :src="this.post.imageUrl" class="post__image" />
+        <img :src="this.post.imageUrl" alt="Image de la publication" class="post__image" />
 
         <a :href="`./#/addcomment?postid=${postId}`">
           <button class="commentButton">Écrire un commentaire</button>

@@ -1,5 +1,5 @@
 <template>
-  <div class="content">
+  <div class="content" role="main">
     <a :href="postLink">
       <button>Retour</button>
     </a>
@@ -13,13 +13,17 @@
     <div class="formBox">
       <form class="form formToTheLeft">
         <div class="formField">
-          <label for="title">Choisissez un nouveau titre </label>
-          <input type="text" name="title" ref="postTitleModify" required />
+          <label for="title"
+            >Choisissez un nouveau titre
+            <input type="text" name="title" ref="postTitleModify" required />
+          </label>
         </div>
 
         <div class="formField">
-          <label for="image">Téléchargez une nouvelle image </label>
-          <input type="file" name="image" ref="postImageModify" required />
+          <label for="image"
+            >Téléchargez une nouvelle image
+            <input type="file" name="image" ref="postImageModify" required />
+          </label>
         </div>
 
         <div class="formField">
@@ -75,7 +79,7 @@ export default {
           requestOptions
         )
           .then((res) => res.json())
-          .then(() => location.href = "./#/home")
+          .then(() => (location.href = "./#/home"))
           .catch((err) => console.log(err));
       }
     },

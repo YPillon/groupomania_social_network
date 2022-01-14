@@ -140,7 +140,8 @@ exports.deleteComment = (req, res) => {
     .catch((error) => res.status(501).json({ error: error }));
 };
 
-exports.likeAndDislike = (req, res) => {
+//Future implémentation d'une fonction de like et dislike
+/*exports.likeAndDislike = (req, res) => {
   Post.findOne({ where: { id: req.params.postId } })
     .then((postData) => {
       const post = postData;
@@ -165,4 +166,4 @@ exports.likeAndDislike2 = (req, res) => {
       didThisUserLiked(thisPost);
     })
     .catch((error) => res.status(507).json(error));
-};
+};*/

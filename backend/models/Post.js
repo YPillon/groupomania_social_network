@@ -21,14 +21,15 @@ Post.init(
       type: DataTypes.STRING,
       allowNull: false,
     },
-    likes: {
+    //Future implémentation de like et dislike
+    /*likes: {
       type: DataTypes.INTEGER,
       defaultValue: 0,
     },
     disLikes: {
       type: DataTypes.INTEGER,
       defaultValue: 0,
-    },
+    },*/
   },
   {
     sequelize,
@@ -36,6 +37,7 @@ Post.init(
   }
 );
 
+//Future implémentation de like et dislike
 /*class UserPosts extends Model {}
 UserPosts.init(
   {
@@ -96,7 +98,7 @@ Post.belongsToMany(User, { through: "UserPosts" });*/
 Post.belongsToMany(User, { through: "UserDislikedPosts" });*/
 
 sequelize
-  .sync()
+  .sync({alter:true})
   .then(() => console.log("Table Posts créée ou déjà existante !"))
   .catch((err) => console.log(err));
 

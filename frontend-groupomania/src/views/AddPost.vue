@@ -1,5 +1,5 @@
 <template>
-  <div class="content">
+  <div class="content" role="main">
     <a :href="homeLink">
       <button>Retour au fil d'actualité</button>
     </a>
@@ -8,13 +8,17 @@
     <div class="formBox">
       <form class="form formToTheLeft">
         <div class="formField">
-          <label for="title">Choisissez un titre </label>
-          <input type="text" name="title" ref="postTitle" required />
+          <label for="title"
+            >Choisissez un titre
+            <input type="text" name="title" ref="postTitle" required />
+          </label>
         </div>
 
         <div class="formField">
-          <label for="image">Téléchargez une image </label>
-          <input type="file" name="image" ref="postImage" required />
+          <label for="image"
+            >Téléchargez une image
+            <input type="file" name="image" ref="postImage" required />
+          </label>
         </div>
 
         <div class="formField">

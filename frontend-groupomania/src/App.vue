@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <div id="header">
+    <div id="header" role="banner">
       <img
         alt="Logo Groupomania"
         class="logo"
@@ -14,7 +14,7 @@
         </div>
       </template>
 
-      <div class="nav">
+      <div class="nav" role="navigation">
         <router-link to="/">Connexion</router-link> |
         <router-link to="/signup">Inscription</router-link>
         <span v-if="userLoggedIn == true"> | </span>
@@ -27,7 +27,6 @@
   </div>
 </template>
 
-//importation de VueHead
 <script>
 export default {
   name: "App",
@@ -115,7 +114,7 @@ $font-color2: #091f43;
 
 $color3: #d1515a;
 
-//Taille de police
+//Tailles de police
 $xSmall: 1.6rem;
 $small: 1.9rem;
 $medium: 2.2rem;

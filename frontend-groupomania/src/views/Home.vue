@@ -1,5 +1,5 @@
 <template>
-  <div class="content">
+  <div class="content" role="main">
     <template v-if="this.checkIfLoggedIn() == true">
       <h2>Bienvenue ! Voici les dernières publications de vos collègues !</h2>
       <a id="addPostLink" href="./#/addpost">

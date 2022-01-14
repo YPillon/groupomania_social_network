@@ -19,7 +19,7 @@ router.delete(
   postCtrl.deleteComment
 );
 
-router.post("/api/posts/:postId/like", postCtrl.likeAndDislike);
-router.post("/api/posts/:postId/like2", postCtrl.likeAndDislike2);
+/*router.post("/api/posts/:postId/like", postCtrl.likeAndDislike);
+router.post("/api/posts/:postId/like2", postCtrl.likeAndDislike2);*/
 
 module.exports = router;

@@ -1,22 +1,26 @@
 <template>
-  <div class="content">
+  <div class="content" role="main">
     <p class="errorMessage">{{ signupError }}</p>
 
     <div class="formBox">
       <form class="form">
         <div class="formField">
-          <label for="email">Email </label>
-          <input type="text" name="email" ref="signUpEmail" required />
+          <label
+            >Email
+            <input type="text" name="email" ref="signUpEmail" required />
+          </label>
         </div>
 
         <div class="formField">
-          <label for="password">Mot de passe </label>
-          <input
-            type="password"
-            name="password"
-            ref="signUpPassword"
-            required
-          />
+          <label for="password"
+            >Mot de passe
+            <input
+              type="password"
+              name="password"
+              ref="signUpPassword"
+              required
+            />
+          </label>
         </div>
 
         <div class="formField">
