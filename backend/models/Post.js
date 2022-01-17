@@ -1,10 +1,5 @@
-const { Sequelize, DataTypes, Model } = require("sequelize");
-const User = require("./User");
-
-const sequelize = new Sequelize("groupomania", "groupomania_user", "12345678", {
-  host: "localhost",
-  dialect: "mysql",
-});
+const { DataTypes, Model } = require("sequelize");
+const sequelize = require("../db_config");
 
 class Post extends Model {}
 Post.init(
@@ -98,7 +93,7 @@ Post.belongsToMany(User, { through: "UserPosts" });*/
 Post.belongsToMany(User, { through: "UserDislikedPosts" });*/
 
 sequelize
-  .sync({alter:true})
+  .sync()
   .then(() => console.log("Table Posts créée ou déjà existante !"))
   .catch((err) => console.log(err));
 

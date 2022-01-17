@@ -1,10 +1,6 @@
 const Post = require("./Post");
-const { Sequelize, DataTypes, Model } = require("sequelize");
-
-const sequelize = new Sequelize("groupomania", "groupomania_user", "12345678", {
-  host: "localhost",
-  dialect: "mysql",
-});
+const { DataTypes, Model } = require("sequelize");
+const sequelize = require("../db_config");
 
 class Comment extends Model {}
 Comment.init(

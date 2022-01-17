@@ -5,12 +5,12 @@ const User = require("../models/User");
 
 exports.signup = (req, res) => {
   bcrypt
-    .hash(JSON.stringify(req.body.password), 10)
+    .hash(req.body.password, 10)
     .then((hash) => {
       async function createUser() {
         try {
           const user = await User.create({
-            email: JSON.stringify(req.body.email),
+            email: req.body.email,
             password: hash,
           });
           res.status(201).json("Utilisateur créé avec succès !");
@@ -25,13 +25,13 @@ exports.signup = (req, res) => {
 
 exports.login = (req, res, next) => {
   User.findOne({
-    where: { email: JSON.stringify(req.body.email) },
+    where: { email: req.body.email },
   }).then((user) => {
     if (!user) {
       res.status(404).json({ error: "Utilisateur non trouvé" });
     }
     bcrypt
-      .compare(JSON.stringify(req.body.password), user.password)
+      .compare(req.body.password, user.password)
       .then((valid) => {
         if (!valid) {
           return res.status(403).json({ error: "Mot de passe incorrect !" });

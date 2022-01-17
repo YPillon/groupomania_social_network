@@ -15,12 +15,11 @@
       </template>
 
       <div class="nav" role="navigation">
-        <router-link to="/">Connexion</router-link> |
-        <router-link to="/signup">Inscription</router-link>
-        <span v-if="userLoggedIn == true"> | </span>
-        <router-link v-if="userLoggedIn == true" to="/home"
-          >Fil d'actualité</router-link
-        >
+        <template v-if="userLoggedIn == false">
+          <router-link to="/">Connexion</router-link> |
+          <router-link to="/signup">Inscription</router-link>
+        </template>
+        <router-link v-else to="/home">Fil d'actualité</router-link>
       </div>
     </div>
     <router-view />

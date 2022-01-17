@@ -1,3 +1,4 @@
+require("dotenv").config();
 const bodyParser = require("body-parser");
 const { Sequelize, DataTypes, Model } = require("sequelize");
 const express = require("express");
@@ -8,10 +9,15 @@ const app = express();
 const userRoutes = require("./routes/user");
 const postRoutes = require("./routes/post");
 
-const sequelize = new Sequelize("groupomania", "groupomania_user", "12345678", {
-  host: "localhost",
-  dialect: "mysql",
-});
+const sequelize = new Sequelize(
+  process.env.DB_NAME,
+  process.env.DB_USERNAME,
+  process.env.DB_PASSWORD,
+  {
+    host: "localhost",
+    dialect: "mysql",
+  }
+);
 
 app.use(bodyParser.json());
 
