@@ -1,7 +1,8 @@
 <template>
   <div class="content" role="main">
     <template v-if="this.checkIfLoggedIn() == true">
-      <h2>Bienvenue ! Voici les dernières publications de vos collègues !</h2>
+      <h2 v-if="this.posts.length !== 0">Bienvenue ! Voici les dernières publications de vos collègues !</h2>
+      <h2 v-if="this.posts.length == 0">Bienvenue ! soyez le premier à poster quelque chose !</h2>
       <a id="addPostLink" href="./#/addpost">
         <button>Créer un post</button>
       </a>

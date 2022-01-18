@@ -102,7 +102,7 @@ export default {
 <style lang="scss">
 //Les style sont classés dans leur ordre d'apparition dans le
 //parcours utilisateur classique:
-// login, home, addPost, post, addComment, modifyPost
+// login, home, addPost, post, modifyPost
 
 //Couleur de la charte graphique
 $color1: #0d203e;
@@ -212,6 +212,7 @@ html {
   &Box {
     padding: 10px;
     width: auto;
+    max-width: 100%;
   }
   &Field {
     margin-bottom: 10px;
@@ -305,6 +306,13 @@ h3 {
 //from AddPost.vue
 .formToTheLeft {
   align-items: flex-start;
+}
+
+@include media-max("phone") {
+  label,
+  input[type="file"] {
+    font-size: $xSmall;
+  }
 }
 
 //from Post.vue
