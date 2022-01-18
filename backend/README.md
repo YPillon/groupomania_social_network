@@ -42,6 +42,10 @@ OR
 node server
 ```
 
+//All tables are created automatically on launch by Sequelize
+
+//If you want to use another database/user/password, you can change it in the /backend/.env file.
+
 //The admin user is automatically created on launch in the /models/User.js file
 //with following credentials:
 // email: admin@admin.com

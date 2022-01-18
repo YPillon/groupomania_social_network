@@ -367,7 +367,6 @@ h3 {
   font-size: $xSmall;
 }
 
-//from AddComment.vue
 .formBoxComment {
   padding: 10px;
   @include media-max("desktopTablet") {
@@ -386,5 +385,13 @@ h3 {
 //from ModifyPost.vue
 .infoTextModify {
   margin: 25px 0;
+}
+
+.modifyImage {
+  margin: 20px 0;
+  text-align: left;
+  &__img {
+    max-height: 150px;
+  }
 }
 </style>

@@ -25,8 +25,11 @@ User.init(
   }
 );
 
-User.sync()
-  .then(() => console.log("Table Users créée ou déjà existante !"))
+sequelize
+  .sync({ force: true })
+  .then(() =>
+    console.log("Tables Users, Posts et Comments créées ou déjà existantes !")
+  )
   //Création de l'admin ou vérification de son existance
   .then(() => {
     bcrypt.hash("1234", 10).then((hash) => {

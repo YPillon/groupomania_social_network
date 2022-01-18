@@ -31,7 +31,6 @@ exports.getOnePost = (req, res) => {
 };
 
 exports.modifyPost = (req, res) => {
-  console.log(req.file);
   Post.findOne({ where: { id: req.params.postId } })
     .then((post) => {
       if (!post) {
@@ -46,9 +45,6 @@ exports.modifyPost = (req, res) => {
           error: "Unauthorized request!",
         });
       } else if (req.file) {
-        console.log("FILE!");
-        console.log(req.get("host"));
-
         const filename = post.imageUrl.split("/images/")[1];
         fs.unlink(path.join(__dirname, `../images/${filename}`), (err) => {
           if (err) throw err;
@@ -64,6 +60,18 @@ exports.modifyPost = (req, res) => {
             .then(() => res.status(200).json("Post modifié avec succès !"))
             .catch((error) => res.status(501).json(error));
         });
+      } else if (!req.file) {
+        const postToUpdate = post;
+        postToUpdate
+          .update({
+            title: req.body.title,
+          })
+          .then(() =>
+            res
+              .status(201)
+              .json("Post modifié avec succès sans changer l'image !")
+          )
+          .catch((error) => res.status(501).json(error));
       }
     })
     .catch((error) => res.status(502).json({ error }));
@@ -119,7 +127,6 @@ exports.getComments = (req, res) => {
 };
 
 exports.deleteComment = (req, res) => {
-  console.log(req.params.commentId);
   Comment.findByPk(req.params.commentId)
     .then((comment) => {
       if (!comment) {

@@ -92,9 +92,4 @@ Post.belongsToMany(User, { through: "UserPosts" });*/
 });
 Post.belongsToMany(User, { through: "UserDislikedPosts" });*/
 
-sequelize
-  .sync()
-  .then(() => console.log("Table Posts créée ou déjà existante !"))
-  .catch((err) => console.log(err));
-
 module.exports = Post;

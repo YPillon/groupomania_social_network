@@ -31,8 +31,4 @@ Comment.init(
 Post.hasMany(Comment);
 Comment.belongsTo(Post);
 
-Comment.sync()
-  .then(() => console.log("Table Comments créée ou déjà existante !"))
-  .catch((err) => console.log(err));
-
 module.exports = Comment;

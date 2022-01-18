@@ -7,11 +7,11 @@
     <div id="post" class="post">
       <article>
         <h3>{{ post.title }}</h3>
-        <img :src="this.post.imageUrl" alt="Image de la publication" class="post__image" />
-
-        <a :href="`./#/addcomment?postid=${postId}`">
-          <button class="commentButton">Écrire un commentaire</button>
-        </a>
+        <img
+          :src="this.post.imageUrl"
+          alt="Image de la publication"
+          class="post__image"
+        />
 
         <template v-if="this.checkIfPostCreator() === true">
           <div>
@@ -26,9 +26,33 @@
 
     <h3>Commentaires</h3>
 
+    <p class="errorMessage">{{ addCommentError }}</p>
+
+    <div class="formBoxComment">
+      <form class="form">
+        <div class="formField">
+          <textarea
+            rows="8"
+            cols="50"
+            placeholder="Partagez votre opinion ici..."
+            name="comment"
+            ref="commentText"
+            class="formBoxComment__Text"
+            required
+          />
+        </div>
+
+        <div class="formField">
+          <button @click.prevent="sendCommentData()">
+            Publier le commentaire
+          </button>
+        </div>
+      </form>
+    </div>
+
     <div class="comments">
       <p v-if="comments.length == 0" class="emptyCommentsMessage">
-        Soyez le premier à écrire un commentaire !
+        Pas encore de commentaires ? Soyez le premier à en écrire un !
       </p>
 
       <article v-for="comment in comments" :key="comment.id" class="commentBox">
@@ -61,6 +85,7 @@ export default {
       post: {},
       postUserId: null,
       comments: [],
+      addCommentError: "",
     };
   },
   methods: {
@@ -119,6 +144,39 @@ export default {
     },
 
     /**
+     * Envoie les données du commentaire à l'API avec l'Id du post
+     * et l'Id de l'utilisateur ayant écrit le commentaire.
+     * @param { Number } postId
+     * @return { Promise }
+     */
+    sendCommentData: function () {
+      //Vérification des champs du formulaire
+      if (this.$refs.commentText.value.trim() == "") {
+        this.addCommentError = "Votre commentaire ne peut pas être vide !";
+      } else {
+        const requestOptions = {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            text: this.$refs.commentText.value,
+            userId: localStorage.getItem("userId"),
+            postId: this.postId,
+          }),
+        };
+
+        return fetch(
+          `http://localhost:3000/api/posts/${this.postId}/comments`,
+          requestOptions
+        )
+          .then((res) => res.json())
+          .then(() => {
+            location.reload();
+          })
+          .catch((err) => console.log(err));
+      }
+    },
+
+    /**
      * Supprime le commentaire et redirige vers le fil d'actualités
      * @param { Number } commentId
      * @return { Promise }
@@ -144,9 +202,9 @@ export default {
   },
 
   /**
-   * Récupération des données nécessaires pour l'affichage 
+   * Récupération des données nécessaires pour l'affichage
    * du post, affectation de l'objet à this.post.
-   * Récupération des données nécessaires pour l'affichage 
+   * Récupération des données nécessaires pour l'affichage
    * des commentaires, affectation du tableau à this.comments.
    * @return { Promise{post} }
    * @return { Promise[comments] }
