@@ -26,7 +26,7 @@ User.init(
 );
 
 sequelize
-  .sync({ force: true })
+  .sync(/*{ alter: true }*/)
   .then(() =>
     console.log("Tables Users, Posts et Comments créées ou déjà existantes !")
   )

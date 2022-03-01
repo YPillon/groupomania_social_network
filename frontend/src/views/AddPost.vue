@@ -3,7 +3,9 @@
     <a :href="homeLink">
       <button>Retour au fil d'actualité</button>
     </a>
-    <p class="errorMessage">{{ addPostError }}</p>
+    <p class="errorMessage" :class="{ hidden: !hasError }">
+      Veuillez choisir un titre et une image
+    </p>
 
     <div class="formBox">
       <form class="form formToTheLeft">
@@ -35,7 +37,7 @@ export default {
   data() {
     return {
       homeLink: "./#/home",
-      addPostError: "",
+      hasError: null,
     };
   },
   methods: {
@@ -49,7 +51,7 @@ export default {
         this.$refs.postImage.files[0] === undefined ||
         this.$refs.postTitle.value.trim() == ""
       ) {
-        this.addPostError = "Veuillez choisir un titre et une image";
+        this.hasError = true;
       } else {
         //Création du formData
         let formData = new FormData();

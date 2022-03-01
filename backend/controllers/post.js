@@ -3,6 +3,7 @@ const Comment = require("../models/Comment");
 const User = require("../models/User");
 const path = require("path");
 const fs = require("fs");
+const UsersLikedPosts = require("../models/UsersLikedPosts");
 
 exports.createPost = (req, res, next) => {
   const post = Post.build({
@@ -147,30 +148,95 @@ exports.deleteComment = (req, res) => {
     .catch((error) => res.status(501).json({ error: error }));
 };
 
-//Future implémentation d'une fonction de like et dislike
-/*exports.likeAndDislike = (req, res) => {
-  Post.findOne({ where: { id: req.params.postId } })
-    .then((postData) => {
-      const post = postData;
-      async function howManyUsers() {
-        console.log(await post.countUsers());
+//Fonction de like et dislike
+exports.likeAndDislike = (req, res) => {
+  UsersLikedPosts.findOne({
+    where: { PostId: req.params.postId, UserId: req.auth.userId },
+  })
+    .then((association) => {
+      //Cas où il n'y a encore ni like ni dislike
+      if (!association) {
+        console.log("No such Combination!");
+        if (req.body.likeValue === 1 || req.body.likeValue === -1) {
+          UsersLikedPosts.create({
+            PostId: req.params.postId,
+            UserId: req.auth.userId,
+            value: req.body.likeValue,
+          })
+            .then(() => {
+              Post.findOne({ where: { id: req.params.postId } })
+                .then((post) => {
+                  const likeValue = req.body.likeValue;
+                  if (likeValue === 1) {
+                    post.likes++;
+                  } else if (likeValue === -1) {
+                    post.dislikes++;
+                  }
+                  post
+                    .save()
+                    .then(() => res.status(201).json("Like/dislike enregistré"))
+                    .catch((err) => res.status(408).json(err));
+                })
+                .catch((err) => res.status(408).json(err));
+            })
+            .catch((err) => res.status(407).json(err));
+        } else if (req.body.likeValue == "Hello") {
+          res.sendStatus(600);
+        } else {
+          res.status(401).json("Mauvaise valeur");
+        }
       }
-      howManyUsers();
-      res.sendStatus(200);
+      //Cas où il y a déja un like ou un dislike
+      else {
+        console.log("Like existant");
+        Post.findOne({ where: { id: req.params.postId } })
+          .then((post) => {
+            if (association.value === req.body.likeValue) {
+              res.status(400).json("Opération impossible");
+            } else if (req.body.likeValue === 1 || req.body.likeValue === -1) {
+              req.body.likeValue === 1
+                ? (post.likes++, post.dislikes--)
+                : (post.dislikes++, post.likes--);
+              post
+                .save()
+                .then(() => {
+                  association
+                    .update({ value: req.body.likeValue })
+                    .then(() => res.status(202).json("Updated!"))
+                    .catch((err) => res.status(400).json(err));
+                })
+                .catch((err) => res.status(400).json(err));
+            } else if (req.body.likeValue === 0) {
+              association.value === 1 ? post.likes-- : post.dislikes--;
+              post
+                .save()
+                .then(() => {
+                  association
+                    .destroy()
+                    .then(() => res.status(200).json("Removed!"))
+                    .catch((err) => res.status(401).json(err));
+                })
+                .catch((err) => res.status(400).json(err));
+            } else {
+              res.status(402).json("Mauvaise valeur");
+            }
+          })
+          .catch((err) => res.status(400).json(err));
+      }
     })
-    .catch((error) => res.status(507).json(error));
+    .catch((err) => res.status(400).json(err));
 };
 
-exports.likeAndDislike2 = (req, res) => {
-  Post.findOne({ where: { id: req.params.postId } })
-    .then((postData) => {
-      const thisPost = postData;
-
-      async function didThisUserLiked(thisPost) {
-        const thisUser = await User.findOne({ where: { id: req.body.userId } });
-        console.log(thisUser);
+exports.checkLikeOrDislike = (req, res) => {
+  UsersLikedPosts.findAll({
+    where: { UserId: req.auth.userId, PostId: req.params.postId },
+  })
+    .then((post) => {
+      if (post.length > 0) {
+        res.status(200).json(post);
+      } else {
+        res.sendStatus(404);
       }
-      didThisUserLiked(thisPost);
     })
-    .catch((error) => res.status(507).json(error));
-};*/
+    .catch((err) => res.status(400).json(err));
+};

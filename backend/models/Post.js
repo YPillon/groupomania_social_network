@@ -1,5 +1,6 @@
 const { DataTypes, Model } = require("sequelize");
 const sequelize = require("../db_config");
+const User = require("./User");
 
 class Post extends Model {}
 Post.init(
@@ -16,15 +17,14 @@ Post.init(
       type: DataTypes.STRING,
       allowNull: false,
     },
-    //Future implémentation de like et dislike
-    /*likes: {
+    likes: {
       type: DataTypes.INTEGER,
       defaultValue: 0,
     },
-    disLikes: {
+    dislikes: {
       type: DataTypes.INTEGER,
       defaultValue: 0,
-    },*/
+    },
   },
   {
     sequelize,
@@ -32,32 +32,6 @@ Post.init(
   }
 );
 
-//Future implémentation de like et dislike
-/*class UserPosts extends Model {}
-UserPosts.init(
-  {
-    UserId: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        model: User,
-        key: "id",
-      },
-    },
-    PostId: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        model: Post,
-        key: "id",
-      },
-    },
-  },
-  {
-    sequelize,
-    timestamps: false,
-  }
-);*/
 
 /*const UserDislikedPosts = sequelize.define(
   "UserDislikedPosts",
@@ -91,5 +65,6 @@ Post.belongsToMany(User, { through: "UserPosts" });*/
   through: "UserDislikedPosts",
 });
 Post.belongsToMany(User, { through: "UserDislikedPosts" });*/
+
 
 module.exports = Post;

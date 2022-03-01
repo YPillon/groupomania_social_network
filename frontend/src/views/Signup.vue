@@ -1,6 +1,8 @@
 <template>
   <div class="content" role="main">
-    <p class="errorMessage">{{ signupError }}</p>
+    <p class="errorMessage" :class="[{ hidden: !hasError }]">
+      Veuillez entrer votre email et choisir un mot de passe
+    </p>
 
     <div class="formBox">
       <form class="form">
@@ -36,7 +38,7 @@ export default {
   name: "Signup",
   data() {
     return {
-      signupError: "",
+      hasError: null,
     };
   },
   methods: {
@@ -51,8 +53,7 @@ export default {
         this.$refs.signUpEmail.value.trim() == "" ||
         this.$refs.signUpPassword.value.trim() == ""
       ) {
-        this.signupError =
-          "Veuillez entrer votre email et choisir un mot de passe";
+        this.hasError = true;
       } else {
         //Envoi de la requête à l'API
         const requestOptions = {

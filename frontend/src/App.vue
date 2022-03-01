@@ -1,13 +1,15 @@
 <template>
   <div id="app">
     <div id="header" role="banner">
-      <img
-        alt="Logo Groupomania"
-        class="logo"
-        src="./assets/icon-left-font-monochrome-white.svg"
-      />
+      <a :href="logoLink">
+        <img
+          alt="Logo Groupomania"
+          class="logo"
+          src="./assets/icon-left-font-monochrome-white.svg"
+        />
+      </a>
 
-      <template v-if="userLoggedIn == true">
+      <template v-if="userLoggedIn">
         <div class="logOutButtons">
           <button @click="logOut">Déconnexion</button>
           <button @click="deleteAccount">Supprimer le compte</button>
@@ -15,7 +17,7 @@
       </template>
 
       <div class="nav" role="navigation">
-        <template v-if="userLoggedIn == false">
+        <template v-if="!userLoggedIn">
           <router-link to="/">Connexion</router-link> |
           <router-link to="/signup">Inscription</router-link>
         </template>
@@ -34,6 +36,11 @@ export default {
       userLoggedIn: this.checkIfLoggedIn(),
       userId: JSON.parse(localStorage.getItem("userId")),
     };
+  },
+  computed: {
+    logoLink() {
+      return this.userLoggedIn ? "./#/home/" : "./#/";
+    },
   },
   methods: {
     /**
@@ -66,7 +73,7 @@ export default {
       if (
         window.confirm(
           "Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible..."
-        ) == true
+        ) === true
       ) {
         const requestOptions = {
           method: "DELETE",
@@ -87,14 +94,6 @@ export default {
           .catch((err) => console.log(err));
       }
     },
-  },
-
-  /**
-   * Ajoute l'attribut lang="fr" à la balise html
-   */
-  created: function () {
-    const html = document.documentElement; // returns the html tag
-    html.setAttribute("lang", "fr");
   },
 };
 </script>
@@ -196,6 +195,10 @@ html {
   }
 }
 
+.hidden {
+  display: none;
+}
+
 //from Login.vue
 .content {
   background-color: $color2;
@@ -292,14 +295,27 @@ h3 {
     max-height: 500px;
     object-fit: contain;
     border-radius: 5px;
+    margin-bottom: 10px;
     @include media-max("phone") {
       min-width: 250px;
     }
   }
 }
 
+.likeButtons-container {
+  display: flex;
+  margin: 10px 0 10px;
+  & button {
+    margin: 0 5px 0 5px;
+  }
+}
+
+.highlightButton {
+  border: solid #252525 3px;
+  
+}
+
 .seePostButton {
-  margin-top: 10px;
   font-size: $medium;
 }
 
@@ -388,6 +404,10 @@ h3 {
       width: 90%;
     }
   }
+}
+
+textarea {
+  resize: none;
 }
 
 //from ModifyPost.vue

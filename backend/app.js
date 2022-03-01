@@ -5,19 +5,10 @@ const express = require("express");
 const cors = require("cors");
 const path = require("path");
 const app = express();
+const sequelize = require("./db_config");
 
 const userRoutes = require("./routes/user");
 const postRoutes = require("./routes/post");
-
-const sequelize = new Sequelize(
-  process.env.DB_NAME,
-  process.env.DB_USERNAME,
-  process.env.DB_PASSWORD,
-  {
-    host: "localhost",
-    dialect: "mysql",
-  }
-);
 
 app.use(bodyParser.json());
 

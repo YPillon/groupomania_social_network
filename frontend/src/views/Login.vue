@@ -1,6 +1,8 @@
 <template>
   <div class="content" role="main">
-    <p class="errorMessage">{{ errorLogin }}</p>
+    <p class="errorMessage" :class="{ hidden: !hasError }">
+      L'email et le mot de passe ne correspondent pas !
+    </p>
 
     <div class="formBox">
       <form class="form">
@@ -31,7 +33,7 @@ export default {
   name: "Login",
   data() {
     return {
-      errorLogin: "",
+      hasError: null,
     };
   },
   methods: {
@@ -55,7 +57,7 @@ export default {
         .then((res) => res.json())
         .then((res) => {
           if (res.error) {
-            this.errorLogin = "L'email et le mot de passe ne correspondent pas";
+            this.hasError = true;
           } else {
             localStorage.setItem("userId", JSON.stringify(res.userId));
             localStorage.setItem("userRole", JSON.stringify(res.userRole));
